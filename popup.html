@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<!-- Styles -->
+<link rel="stylesheet" type="text/css" href="css/popup.css">
+<link rel="stylesheet" type="text/css" href="css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="css/fa.css">
+<link rel="stylesheet" type="text/css" href="css/fa-all.css">
+<link rel="stylesheet" type="text/css" href="css/fa-brands.css">
+<body>
+    <!-- Loading Thang -->
+    <div id="loader">
+        <div class="lds-eclipse"><div></div></div>
+    </div>
+
+    <!-- Header -->
+    <a class="btnclose mi tiny">close</a>
+    <div id="header">
+        <div class="headerlogo t-shadow">
+            <img class="img-logo" />
+            Neat<span>DSP</span>
+        </div>
+    </div>
+
+    <!-- Not on DSP page -->
+    <div class="page closed">
+        <div class="centered">
+            <div class="link-dsp">
+                <p>Launch this popup when you are on a DSP</p>
+                <a class="cta cta-white cta-space" data-target="_blank" data-url="https://www.google.com/ddm/bidmanager/"><i class="fab fa-fw fa-google"></i> DBM</a>
+                <a class="cta cta-white cta-space" data-target="_blank" data-url="https://ams.amazon.com/aap/"><i class="fab fa-fw fa-amazon"></i> AAP</a>
+                <a class="cta cta-white cta-space" data-target="_blank" data-url="https://admanagerplus.yahoo.com/"><i class="fab fa-fw fa-yahoo"></i> Brightroll</a>
+                <a disabled class="cta cta-white cta-space" data-target="_blank" data-url="https://desk.thetradedesk.com/"><i class="fab fa-fw fa-ttd"></i> Trade Desk</a>
+            </div>
+            <div class="link-cmp">
+                <p>...or fast-travel to an existing campaign</p>
+                <div id="closed-search-cont">
+                    <select class="closed-search"></select>
+                    <ul class="closed-response"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- On DSP page -->
+    <div class="page open">
+
+        <p class="header-msg">Organise your multi-DSP campaigns by adding objects to folders in the NeatDSP extension</p>
+
+        <!-- Current campaign info -->
+        <div class="info-box" id="info-cmp">
+            <div id="info-cmp-display">
+                <div class="col cmp-header">
+                    <div>
+                        <i class="fa fa-fw fa-file"></i>
+                        <h3 data-cmp="name"></h3>
+                        <input class="h3" placeholder="Name" name="data-cmp" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                    </div>
+                    <div class="ico-cont">
+                        <i class="fa fa-fw fa-edit"></i>
+                        <span data-cmp="id"></span>
+                    </div>
+                </div>
+                <ul id="cmp-list"></ul>
+            </div>
+        </div>
+
+        <!-- Current page info -->
+        <div class="info-box" id="info-page">
+            <div class="header collapse col" data-collapse="0"><div><i class="fa fa-fw fa-map-marked-alt"></i>&nbsp;This Page</div><div><i class="fa fa-fw fa-caret-down"></i></div></div>
+            <div class="collapsable">
+                <div class="col info-dsp">
+                    <div>
+                        <div class="info-title" data-info="cmp">-</div>
+                        <p class="info-title-label"><i class="fab fa-fw"></i>Campaign</p>
+                    </div>
+                    <i class="mi tiny cmp-add">add_circle_outline</i>
+                </div>
+
+                <div class="col info-dsp">
+                    <div>
+                        <div class="info-title" data-info="adv">-</div>
+                        <p class="info-title-label"><i class="fab fa-fw"></i>Advertiser</p>
+                    </div>
+                    <!--<i class="mi tiny cmp-add">add_circle_outline</i>-->
+                </div>
+
+                <div class="col info-dsp">
+                    <div>
+                        <div class="info-title" data-info="par">-</div>
+                        <p class="info-title-label"><i class="fab fa-fw"></i>Partner</p>
+                    </div>
+                    <!--<i class="mi tiny cmp-add">add_circle_outline</i>-->
+                </div>
+            </div>
+        </div>
+
+        <!-- Select/create camapaign -->
+        <div class="info-box" id="info-search">
+            <!-- Campaign search -->
+            <div id="info-cmp-search">
+                <div class="header collapse col" data-collapse="0"><div><i class="fa fa-fw fa-list"></i>&nbsp;Select/Create Campaign</div><div><i class="fa fa-fw fa-caret-down"></i></div></div>
+                <div class="collapsable">
+                    <div class="select-cont">
+                        <select class="select-a" name="cmp-search"></select>
+                    </div>
+                    <p class="info-input-label">Existing Campaign</p>
+
+                    <div class="col newcmp-cont">
+                        <input type="text" name="cmp-new" placeholder="Name your new campaign" />
+                        <i class="mi tiny cmp-new">add_circle_outline</i>
+                    </div>
+                    <p class="info-input-label">New Campaign</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/select2.min.js"></script>
+    <script type="text/javascript" src="js/popup.js"></script>
+</body>
+</html>

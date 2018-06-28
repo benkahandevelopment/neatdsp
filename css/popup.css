@@ -1,0 +1,645 @@
+/* Icon sets */
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v38/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+*:not(input):not(select) {
+    user-select: none;
+}
+
+input:focus {
+    outline: 0 !important;
+}
+
+.mi {
+    direction: ltr;
+    display: inline-block;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    letter-spacing: normal;
+    line-height: 1;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+body, html {
+    width: 500px;
+    padding: 0;
+    margin: 0;
+    /*height: 500px;*/
+    font-size: 12px;
+    color: #333333;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    box-sizing: border-box;
+    max-height: 600px;
+    overflow: hidden;
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
+
+.header {
+    display: block;
+    font-size: 12px;
+    line-height: 1.62;
+    text-transform: uppercase;
+    background: #216224;
+    background-color: #4CAF50;
+    border-top: 2px solid #216224;
+    border-top: 2px solid #4CAF50;
+    color: white;
+    padding: 3px 5px;
+    margin-top: 10px;
+    background: white;
+    color: #4CAF50;
+    cursor: pointer;
+    font-weight: bold;
+    /*border-bottom: 1px solid #4CAF50;*/
+}
+
+.header:hover {
+    color: #216224;
+    border-top-color: #216224;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    /*border-radius: 5px;*/
+}
+
+#loader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 9999;
+}
+
+.btnclose {
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px;
+    opacity: 0.3;
+    transition: opacity 0.25s;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+}
+
+.btnclose:hover {
+    opacity: 0.7;
+    transition: opacity 0.1s;
+}
+
+.page.closed {
+    background-color: #4CAF50;
+    color: #ffffff;
+    box-sizing: border-box;
+    height: 350px;
+}
+
+.page.closed .centered {
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 5px;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.page.closed .link-cmp {
+    padding-top: 30px;
+}
+
+.page.closed ul.closed-response {
+    padding: 0;
+    list-style: none;
+}
+
+.page.closed ul.closed-response li {
+    margin: 0 5px;
+    padding: 5px 8px;
+    cursor: pointer;
+    opacity: 0.7;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.page.closed ul.closed-response li:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #fff;
+    color: #4CAF50;
+    transition: all 0.1s;
+}
+
+ul.closed-response li i.fab {
+    border-right: 1px solid #fff;
+    margin-right: 5px;
+    padding-right: 5px;
+}
+
+ul.closed-response li:hover i.fab {
+    border-color: #4CAF50;
+}
+
+ul.closed-response li span {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-left: 5px;
+}
+
+.page.open {
+    overflow: hidden;
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+.cta {
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.cta-space {
+    margin: 0 5px;
+}
+
+.cta-white {
+    border: 1px solid white;
+    background: rgba(255, 255, 255, 0);
+    transition: all 0.2s;
+}
+
+.cta-white:hover {
+    background: rgba(255, 255, 255, 0.3);
+    background: white;
+    color: #4CAF50;
+    transition: all 0.1s;
+}
+
+.cta-white:active {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.cta[disabled] {
+    cursor: no-drop;
+    opacity: 0.5;
+}
+
+.cta .fab, .cta .icon-logo_ttd_white {
+    margin-right: 4px;
+    padding-right: 4px;
+    border-right: 1px solid rgba(255, 255, 255, 0.3)
+}
+
+.cta:hover .fab, .cta:hover .icon-logo_ttd_white {
+    border-color: #4CAF50;
+    transition: border-color 0.1s;
+}
+
+input[type=text]:not(.h3) {
+    color: #444444;
+    line-height: 26px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    margin: 0 3px;
+}
+
+input[type=text]:not(.h3):hover {
+    border-color: #4CAF50;
+}
+
+input[type=text]:not(.h3):focus, input[type=text]:not(.h3):active {
+    border-color: #216224;
+}
+
+.newcmp-cont {
+    margin: 5px;
+}
+
+.newcmp-cont i {
+    cursor: pointer;
+    color: #216224;
+    opacity: 0.5;
+    margin-bottom: 3px;
+    margin-left: 5px;
+}
+
+.newcmp-cont i:hover {
+    opacity: 0.7;
+}
+
+.newcmp-cont input[type=text] {
+    width: 440px;
+}
+
+#info-cmp, #info-search {
+    background-color: #4CAF50;
+    background-color: white;
+    padding: 0 0 3px 0;
+    padding: 0;
+}
+
+.select-cont {
+    box-sizing: border-box;
+    margin: 10px 8px 5px 8px;
+}
+
+#info-cmp-search label {
+    font-size: 10px;
+    color: #666;
+    padding: 5px 5px 0 5px;
+}
+
+#cmp-list {
+    background: white;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#cmp-list li {
+    padding: 8px;
+}
+
+#cmp-list li.title {
+    /*text-transform: uppercase;*/
+    font-size: 10px;
+    color: #666;
+}
+
+/*#cmp-list li:hover .cmp-meta { font-weight: bold; }*/
+
+#cmp-list li .cmp-meta span {
+    font-size: 10px;
+    color: #ccc;
+    /*border-left: 1px solid #ccc; margin-left: 3px;*/
+    padding-left: 6px;
+}
+
+#cmp-list li:not(.title) .cmp-meta i {
+    margin-right: 6px;
+    padding-right: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    opacity: 0.5;
+    border-width: 0 1px 0 0;
+}
+
+#cmp-list li .cmp-link i {
+    color: #216224;
+    opacity: 0.5;
+    cursor: pointer;
+    margin-left: 3px;
+    padding: 3px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    opacity: 0;
+}
+
+#cmp-list li:hover .cmp-link i {
+    border: 1px solid #4CAF50;
+    opacity: 0.5;
+}
+
+#cmp-list li .cmp-link i:hover {
+    opacity: 1;
+    background-color: #4CAF50;
+    color: white;
+}
+
+#cmp-list li:not(.title):hover {
+    background-color: #eee;
+}
+
+#cmp-list li:not(.title):hover .cmp-meta i {
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    opacity: 1;
+}
+
+#info-cmp-display {
+    border-top: 2px solid #216224;
+    border-top: 2px solid #4CAF50;
+}
+
+.info-box {
+    border: 1px dashed #4CAF50;
+    border-width: 0 1px 1px 1px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-style: solid;
+    margin: 10px;
+    background-color: white;
+}
+
+.info-box:hover {
+    border-left-color: #4CAF50;
+    border-right-color: #4CAF50;
+}
+
+.cmp-header {
+    padding: 5px 8px;
+    background-color: #216224;
+    background-color: #4CAF50;
+    color: white;
+    background: white;
+    color: #4CAF50;
+    text-transform: uppercase;
+}
+
+.cmp-header .ico-cont {
+    color: #555;
+    font-size: 10px;
+}
+
+.cmp-header .ico-cont i {
+    cursor: pointer;
+    display: none;
+}
+
+.cmp-header:hover .ico-cont i {
+    display: inline-block;
+}
+
+.cmp-header .ico-cont i:hover {
+    color: #4CAF50;
+}
+
+.cmp-header input.h3 {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #4CAF50;
+    color: #4CAF50;
+    display: none;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    padding: 0;
+}
+
+.cmp-header h3 {
+    font-size: 18px;
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+    /*font-weight: normal;*/
+}
+
+.cmp-header .fa-file {
+    font-size: 18px;
+}
+
+.info-title {
+    margin: 0;
+    padding: 3px 3px 0 3px;
+    /*font-weight: bold;*/
+}
+
+.info-dsp:hover .info-title {
+    /*font-weight: bold;*/
+}
+
+.info-input-label {
+    margin: 0;
+    padding: 0 3px 8px 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.info-title-label {
+    margin: 0;
+    padding: 3px 3px 8px 0;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #666666;
+}
+
+.info-title-label>i {
+    margin-right: 5px;
+    margin: 0 3px 0 3px;
+}
+
+.col {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-dsp {
+    padding: 3px 5px 0 5px;
+}
+
+.info-dsp:hover {
+    background-color: #eee;
+}
+
+.info-dsp .mi {
+    margin-top: -3px;
+    opacity: 0.5;
+    cursor: pointer;
+    color: #216224;
+    transition: all 0.25s;
+}
+
+.info-dsp .mi:hover {
+    opacity: 0.7;
+    transition: all 0.1s;
+}
+
+#header {
+    background-color: #4CAF50;
+    background-color: #216224;
+    line-height: 36px;
+    height: 52px;
+    font-size: 24px;
+    color: white;
+    margin: 0;
+    padding: 0 5px;
+    border-top: 2px solid #216224;
+    border-top: 2px solid #4CAF50;
+}
+
+#header .img-logo {
+    width: 28px;
+    height: 28px;
+    margin: 8px 4px 0 10px;
+    position: relative;
+    top: 4px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+}
+
+#header span, p.header-msg span {
+    font-weight: bold;
+}
+
+p.header-msg {
+    text-align: center;
+    display: block;
+    margin: 0;
+    padding: 8px 8px 0 8px;
+    font-size: 10px;
+    /*background-color: white;*/
+    line-height: 1.62;
+    color: #666;
+    font-style: italic;
+}
+
+.select-a {
+    /* Select2 box */
+    min-width: 50%;
+}
+
+/* Loader */
+
+@keyframes lds-eclipse {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes lds-eclipse {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.lds-eclipse {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.lds-eclipse div {
+    position: absolute;
+    -webkit-animation: lds-eclipse 1.7s linear infinite;
+    animation: lds-eclipse 1.7s linear infinite;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 4px 0 0 #4caf50;
+}
+
+.lds-eclipse {
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.d-block {
+    display: block;
+}
+
+.t-shadow {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(255, 255, 255, 0.5);
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+    height: 13px;
+    border-radius: 0px;
+    background-color: #AAA;
+}
+
+::-webkit-scrollbar-button:hover {
+    background-color: #AAA;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #AAA;
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #4caf50;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-track:hover {
+    background-color: transparent;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Generated by Glyphter (http://www.glyphter.com) on  Thu Jun 28 2018*/
+
+@font-face {
+    font-family: 'ttd font';
+    src: url('../webfonts/ttd-font.eot');
+    src: url('../webfonts/ttd-font.eot?#iefix') format('embedded-opentype'), url('../webfonts/ttd-font.woff') format('woff'), url('../webfonts/ttd-font.ttf') format('truetype'), url('../webfonts/ttd-font.svg#ttd-font') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fab.fa-fw.fa-ttd:before {
+    display: inline-block;
+    font-family: 'ttd font';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: '\0041';
+}
