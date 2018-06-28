@@ -99,14 +99,20 @@ h1, h2, h3, h4 {
     opacity: 0.3;
     transition: opacity 0.25s;
     position: absolute;
-    top: 5px;
-    right: 5px;
-    color: white;
+    top:50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color: #216224;
+
+
+    border: 1px solid transparent;
+    border-radius: 50%;
 }
 
 .btnclose:hover {
     opacity: 0.7;
-    transition: opacity 0.1s;
+    transition: all 0.1s;
+    border: 1px solid #216224;
 }
 
 .page.closed {
@@ -148,7 +154,7 @@ h1, h2, h3, h4 {
     border-radius: 4px;
     transition: all 0.2s;
 
-    
+
 }
 
 .page.closed ul.closed-response li:hover {
@@ -480,14 +486,19 @@ input[type=text]:not(.h3):focus, input[type=text]:not(.h3):active {
 #header {
     background-color: #4CAF50;
     background-color: #216224;
+    background-color: #ffffff;
     line-height: 36px;
     height: 52px;
     font-size: 24px;
     color: white;
+    color: #216224;
     margin: 0;
     padding: 0 5px;
     border-top: 2px solid #216224;
     border-top: 2px solid #4CAF50;
+    border: 2px solid #216224;
+    border-width: 0 0 2px 0;
+    position:relative;
 }
 
 #header .img-logo {
