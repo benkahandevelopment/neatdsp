@@ -274,7 +274,7 @@ $(function(){
                     var data = v[0];
                     var icon = (data.dsp=="dbm" ? "google" : (data.dsp=="aap" ? "amazon" : "yahoo"));
                     var output = "<li data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
-                    "<i class='fab fa-fw fa-"+icon+"'></i>"+data.name+"<span>"+data.dsp_id+"</span></li>";
+                    "<i class='fab fa-fw fa-"+icon+"'></i>"+data.name+"<!--<span>"+data.dsp_id+"</span>--></li>";
                     $outEl.append(output);
                 });
 
@@ -415,7 +415,8 @@ function saveCmpName(){
 
 //Loader
 function load(s){
-    if(s) $("#loader").fadeIn(100);
+    //if(s) $("#loader").fadeIn(100);
+    if(s) $("#loader").show();
         else setTimeout(function(){ $("#loader").fadeOut(250); }, 250);
 }
 

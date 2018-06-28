@@ -16,7 +16,7 @@
     "permissions":["tabs", "storage", "<all_urls>"],
     "content_scripts":[
         {
-            "matches": [ "*://*.google.com/ddm/bidmanager/*", "*://ams.amazon.com/aap/*", "*://admanagerplus.yahoo.com/*", "://desk.thetradedesk.com/*"],
+            "matches": [ "*://*.google.com/ddm/bidmanager/*", "*://ams.amazon.com/aap/*", "*://admanagerplus.yahoo.com/*", "*://desk.thetradedesk.com/*"],
             "js": ["js/jquery.min.js", "js/jqueryui.min.js", "js/contentscript.js"],
             "css": ["css/contentscript.css"],
             "run_at": "document_idle",
