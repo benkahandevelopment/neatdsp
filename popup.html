@@ -1,124 +1,98 @@
 <!doctype html>
 <html>
-<!-- Styles -->
-<link rel="stylesheet" type="text/css" href="css/popup.css">
-<link rel="stylesheet" type="text/css" href="css/select2.min.css">
-<link rel="stylesheet" type="text/css" href="css/fa.css">
-<link rel="stylesheet" type="text/css" href="css/fa-all.css">
-<link rel="stylesheet" type="text/css" href="css/fa-brands.css">
+<head>
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="css/fa.css">
+    <link rel="stylesheet" type="text/css" href="css/fa-all.css">
+    <link rel="stylesheet" type="text/css" href="css/fa-brands.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap-theme-superhero.min.css">-->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme-lux.min.css">
+    <link rel="stylesheet" type="text/css" href="css/popup-extras.css">
+
+    <!-- Meta -->
+    <title>NeatDSP Popup</title>
+</head>
 <body>
     <!-- Loading Thang -->
     <div id="loader">
         <div class="lds-eclipse"><div></div></div>
     </div>
 
-    <!-- Header -->
-    <div id="header">
-        <a class="btnclose mi tiny">close</a>
-        <div class="headerlogo t-shadow">
-            <img class="img-logo" />
-            Neat<span>DSP</span>
-        </div>
-    </div>
+    <!-- Top Nav -->
+    <nav class="navbar navbar-dark bg-dark">
+        <span class="navbar-brand"><img class="img-logo mr-2" /> NeatDSP</span>
 
-    <!-- Not on DSP page -->
-    <div class="page closed">
-        <div class="centered">
-            <div class="link-dsp">
-                <p>Launch this popup when you are on a DSP</p>
-                <a class="cta cta-white cta-space" data-target="_blank" data-url="https://www.google.com/ddm/bidmanager/"><i class="fab fa-fw fa-google"></i> DBM</a>
-                <a class="cta cta-white cta-space" data-target="_blank" data-url="https://ams.amazon.com/aap/"><i class="fab fa-fw fa-amazon"></i> AAP</a>
-                <a class="cta cta-white cta-space" data-target="_blank" data-url="https://admanagerplus.yahoo.com/"><i class="fab fa-fw fa-yahoo"></i> Brightroll</a>
-                <a disabled class="cta cta-white cta-space" data-target="_blank" data-url="https://desk.thetradedesk.com/"><i class="fab fa-fw fa-ttd"></i> Trade Desk</a>
-            </div>
-            <div class="link-cmp">
-                <p>...or fast-travel to an existing campaign</p>
-                <div id="closed-search-cont">
-                    <select class="closed-search"></select>
-                    <ul class="closed-response"></ul>
-                </div>
-            </div>
-        </div>
-    </div>
+        <!--<form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" />
+        </form>-->
 
-    <!-- On DSP page -->
-    <div class="page open">
+        <form class="form-inline" id="navbar-search">
+            <select class="form-control" placeholder="Search"></select>
+        </form>
+    </nav>
 
-        <p class="header-msg">Organise your multi-DSP campaigns by adding objects to folders in the NeatDSP extension</p>
+    <div class="container container-fluid page">
 
         <!-- Current campaign info -->
-        <div class="info-box" id="info-cmp">
+        <div class="card my-3 bg-dark" id="info-cmp">
             <div id="info-cmp-display">
-                <div class="col cmp-header">
-                    <div>
-                        <i class="fa fa-fw fa-file"></i>
-                        <h3 data-cmp="name"></h3>
-                        <input class="h3" placeholder="Name" name="data-cmp" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                    </div>
-                    <div class="ico-cont">
-                        <i class="fa fa-fw fa-edit"></i>
-                        <span data-cmp="id"></span>
-                    </div>
-                </div>
-                <ul id="cmp-list"></ul>
+                <h5 class="card-header text-white" data-cmp="name"></h5>
+                <ul class="list-group list-group-flush" id="cmp-list"></ul>
             </div>
         </div>
 
         <!-- Current page info -->
-        <div class="info-box" id="info-page">
-            <div class="header collapse col" data-collapse="0"><div><i class="fa fa-fw fa-map-marked-alt"></i>&nbsp;This Page</div><div><i class="fa fa-fw fa-caret-down"></i></div></div>
-            <div class="collapsable">
-                <div class="col info-dsp">
+        <div class="card my-3" id="info-page">
+            <h5 class="card-header d-flex justify-content-between align-items-center">This Page <i class="fab fa-fw"></i></h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <div class="info-title" data-info="cmp">-</div>
-                        <p class="info-title-label"><i class="fab fa-fw"></i>Campaign</p>
+                        <small class="text-muted info-title-label"><i class="fab fa-fw"></i>Campaign</small>
                     </div>
-                    <i class="mi tiny cmp-add">add_circle_outline</i>
-                </div>
+                    <button class="btn btn-outline-success btn-sm cmp-add collapse" data-toggle="tooltip" data-placement="bottom" title="Add to Campaign"><i class="fas fa-fw fa-plus"></i></button>
+                </li>
+                <li class="list-group-item">
+                    <div class="info-title" data-info="adv">-</div>
+                    <small class="text-muted info-title-label"><i class="fab fa-fw"></i>Advertiser</small>
+                </li>
+                <li class="list-group-item">
+                    <div class="info-title" data-info="par">-</div>
+                    <small class="text-muted info-title-label"><i class="fab fa-fw"></i>Partner</small>
+                </li>
+            </ul>
+        </div>
 
-                <div class="col info-dsp">
-                    <div>
-                        <div class="info-title" data-info="adv">-</div>
-                        <p class="info-title-label"><i class="fab fa-fw"></i>Advertiser</p>
-                    </div>
-                    <!--<i class="mi tiny cmp-add">add_circle_outline</i>-->
-                </div>
-
-                <div class="col info-dsp">
-                    <div>
-                        <div class="info-title" data-info="par">-</div>
-                        <p class="info-title-label"><i class="fab fa-fw"></i>Partner</p>
-                    </div>
-                    <!--<i class="mi tiny cmp-add">add_circle_outline</i>-->
-                </div>
+        <!-- All campaign info -->
+        <div class="card my-3" id="info-all">
+            <div id="info-all-display">
+                <h5 class="card-header">All Campaigns</h5>
+                <ul class="list-group list-group-flush" id="all-list"></ul>
             </div>
         </div>
 
-        <!-- Select/create camapaign -->
-        <div class="info-box" id="info-search">
-            <!-- Campaign search -->
-            <div id="info-cmp-search">
-                <div class="header collapse col" data-collapse="0"><div><i class="fa fa-fw fa-list"></i>&nbsp;Select/Create Campaign</div><div><i class="fa fa-fw fa-caret-down"></i></div></div>
-                <div class="collapsable">
-                    <div class="select-cont">
-                        <select class="select-a" name="cmp-search"></select>
+        <!-- Create new campaign -->
+        <div class="card my-3" id="info-search">
+            <h5 class="card-header">New Campaign</h5>
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Name your new campaign" name="cmp-new" />
+                    <div class="input-group-append">
+                        <button class="btn btn-info cmp-new" type="button"><i class="fas fa-fw fa-plus"></i></button>
                     </div>
-                    <p class="info-input-label">Existing Campaign</p>
-
-                    <div class="col newcmp-cont">
-                        <input type="text" name="cmp-new" placeholder="Name your new campaign" />
-                        <i class="mi tiny cmp-new">add_circle_outline</i>
-                    </div>
-                    <p class="info-input-label">New Campaign</p>
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Javascript -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/select2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="js/popup.js"></script>
 </body>
 </html>
