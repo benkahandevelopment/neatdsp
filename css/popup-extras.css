@@ -1,5 +1,5 @@
 /* Global */
-body, #body, html { max-width: 450px; width: 450px; }
+body, #body, html { width: 500px; }
 .page { max-height: 510px; overflow: hidden; overflow-y: scroll; }
 ::-webkit-scrollbar-button { display: none; height: 13px; border-radius: 0px; background-color: #AAA; }
 ::-webkit-scrollbar-button:hover { background-color: #AAA; }

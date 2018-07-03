@@ -362,9 +362,7 @@ function refreshThisCmp(){
         $('[data-toggle="tooltip"]').tooltip();
 
         //Scroll back up to top
-        $('.page').animate({
-            scrollTop: 0
-        }, 250);
+        $('.page').animate({ scrollTop: 0 }, 250);
 
         load(false);
     });
@@ -378,7 +376,6 @@ function feedback(title, message){
 //Add response to popup
 function setDspInfo(i){
     load(true);
-    sortCmps();
     /*if(i === undefined) {
         $('.page.closed').show();
         $('.page.open').hide();
@@ -482,23 +479,5 @@ function clearStorage(){
     chrome.storage.sync.clear(function(){
         var error = chrome.runtime.lastError;
         error ? console.error(error) : console.log('Removed campaign data');
-    });
-}
-
-function sortCmps(){
-    chrome.storage.sync.get({"campaigns":[]}, function(o){
-        var cmps = o.campaigns;
-        var newCmps = [];
-        cmps.forEach(function(v,i){
-            if(v!==null){
-                newCmps.push(v);
-            }
-        });
-
-        newCmps.sort(function(a,b){
-            return a.name < b.name ? -1 : ( a.name > b.name ? 1 : 0);
-        });
-
-        chrome.storage.sync.set({"campaigns" : newCmps});
     });
 }
