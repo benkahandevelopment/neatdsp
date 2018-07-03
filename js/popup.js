@@ -13,6 +13,16 @@ $(function(){
         chrome.tabs.create({ url:href, active:true });
     });
 
+    $(document.body).on('click', '#all-list li > a', function(){
+        var a = {
+            'id' : $(this).attr('data-id'),
+            'text' : $(this).html()
+        };
+
+        load(true);
+        selectCmp(a);
+    });
+
     //Collapsable boxes - click event
     $('.collapse').click(function(){
         var $el = $(this);
@@ -40,24 +50,9 @@ $(function(){
     $('input[name=data-cmp]').keypress(function(e){ if(e.which == 13){ saveCmpName(); } })
 
     //Campaign row - link
-    $(document.body).on('click', '.cmp-link > i.cmp-row-link', function(){
+    $(document.body).on('click', '.cmp-row-link', function(){
         var $e = $(this).parent().parent();
-        if($e.attr('data-dsp')=='dbm'){
-            var p = $e.attr('data-par-id');
-            var a = $e.attr('data-adv-id');
-            var c = $e.attr('data-dsp-id');
-            var href = 'https://www.google.com/ddm/bidmanager/#ng_nav/p/'+p+'/a/'+a+'/c/'+c;
-            chrome.tabs.create({url:href,active:true});
-        } else if($e.attr('data-dsp')=='aap'){
-            var a = $e.attr('data-adv-id');
-            var c = $e.attr('data-dsp-id');
-            var href = 'https://ams.amazon.com/aap/'+a+'/orders/'+c+'/line-items';
-            chrome.tabs.create({url:href,active:true});
-        } else if($e.attr('data-dsp')=='yahoo'){
-            var c = $e.attr('data-dsp-id');
-            var href = 'https://admanagerplus.yahoo.com/app/campaigns/'+c+'/lines';
-            chrome.tabs.create({url:href,active:true});
-        }
+        linkOut($e); //where $e is an element with data-dsp and relevant ids
     });
 
     $(document.body).on('click', 'ul.closed-response > li', function(){
@@ -81,7 +76,7 @@ $(function(){
     });
 
     //Campaign row - delete
-    $(document.body).on('click', '.cmp-link > i.cmp-row-delete', function(){
+    $(document.body).on('click', '.cmp-btns > .cmp-row-delete', function(){
         load(true);
         var $e = $(this).parent().parent();
         var id = $('#info-cmp-display').attr('data-id');
@@ -188,7 +183,7 @@ $(function(){
     $(document.body).on('click', '.cmp-new', function(){
         load(true);
         var $t = $(this);
-        var n = $.trim($t.parent().find('input[type=text]').val());
+        var n = $.trim($('input[name=cmp-new]').val());
 
         if(n.length<3){
             feedback(null, "Campaign name must be 3 characters or more");
@@ -238,7 +233,19 @@ $(function(){
         var cmpdata = [];
         if(cmps.length>0){
             cmps.forEach(function(i,v){
-                if(i!=null) cmpdata.push({id:v, text:i.name});
+                if(i!=null) {
+                    cmpdata.push({id:v, text:i.name});
+
+                    //Add to full list output
+                    var $o = $("#all-list");
+                    var x =
+                        "<li class='list-group-item d-flex align-items-center'>"+
+                            "<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
+                            "<a href='#' data-id='"+v+"'>"+i.name+"</a>"+
+                            "<div class='btn-group ml-auto'><button type='button' class='btn btn-sm btn-outline-danger cmp-delete' data-toggle='tooltip' data-placement='bottom' title='Delete Campaign'><i class='fa fa-fw fa-trash'></i></div>"
+                        "</li>";
+                    $o.append(x);
+                }
             });
         }
 
@@ -253,21 +260,8 @@ $(function(){
         $('#closed-search-cont select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
 
         //On campaign selection
-        $('#info-cmp-search select').on('select2:select', function (e) {
-            var d = e.params.data;
-            chrome.storage.sync.set({"selectedCmp" : d.id});
-            $("#info-cmp-display").attr('data-id', d.id);
-            $("#info-cmp-display").attr('data-name', d.text);
-            refreshThisCmp();
-        });
-
-        $('#navbar-search select').on('select2:select', function (e) {
-            var d = e.params.data;
-            chrome.storage.sync.set({"selectedCmp" : d.id});
-            $("#info-cmp-display").attr('data-id', d.id);
-            $("#info-cmp-display").attr('data-name', d.text);
-            refreshThisCmp();
-        });
+        $('#info-cmp-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
+        $('#navbar-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
 
         $('#closed-search-cont select').on('select2:select', function (e) {
             var d = e.params.data;
@@ -296,11 +290,11 @@ $(function(){
         //Save last campaign selection
         chrome.storage.sync.get({"selectedCmp":0}, function(x){
             var id = parseInt(x.selectedCmp);
-            $("#info-cmp-search select").val([id]);
-            $("#info-cmp-search select").trigger("change");
+            $("#navbar-search select").val([id]);
+            $("#navbar-search select").trigger("change");
 
             $("#info-cmp-display").attr('data-id', id);
-            $("#info-cmp-display").attr('data-name', $('#info-cmp-search select option[value='+id+']').html());
+            $("#info-cmp-display").attr('data-name', $('#navbar-search select option[value='+id+']').html());
             refreshThisCmp();
         });
     });
@@ -350,14 +344,27 @@ function refreshThisCmp(){
         cmps[cmpId].cmps.forEach(function(v,i){
             var data = v[0];
             var icon = (data.dsp=="dbm" ? "google" : (data.dsp=="aap" ? "amazon" : "yahoo"));
-            var output = "<li class='cmp-cmp col' data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
-            "<div class='cmp-meta'><i class='fab fa-fw fa-"+icon+"'></i>"+data.name+"<span>"+data.dsp_id+"</span></div>"+
-            "<div class='cmp-link'>"+
-                "<i class='fa fa-fw fa-trash cmp-row-delete'></i>"+
-                "<i class='fa fa-fw fa-external-link-square-alt cmp-row-link'></i>"+
+            var output = "<li class='cmp-cmp list-group-item d-flex align-items-center' data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
+            "<div class='pr-2'>"+
+                "<i class='fab fa-fw fa-"+icon+" mr-2'></i>"+
+            "</div><div>"+
+                "<a href='#' class='cmp-row-link'>"+data.name+"</a>"+
+                "<br/><small class='text-muted text-sm'>"+data.dsp_id+"</small>"+
+            "</div>"+
+            "<div class='cmp-btns btn-group ml-auto'>"+
+                "<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
+                //"<button type='button' class='btn btn-sm ml-1 btn-outline-success cmp-row-link' data-toggle='tooltip' data-placement='bottom' title='Visit this strategy'><i class='cursor-p fa fa-fw fa-external-link-square-alt'></i></button>"+
             "</div></li>";
             $outEl.append(output);
         });
+
+        //Tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+
+        //Scroll back up to top
+        $('.page').animate({
+            scrollTop: 0
+        }, 250);
 
         load(false);
     });
@@ -371,15 +378,18 @@ function feedback(title, message){
 //Add response to popup
 function setDspInfo(i){
     load(true);
-    if(i === undefined) {
+    sortCmps();
+    /*if(i === undefined) {
         $('.page.closed').show();
         $('.page.open').hide();
         load(false);
         return false;
+    } else {*/
+        //$('.page.closed').hide();
+        //$('.page.open').show();
+    if(i===undefined){
+        $("#info-page").hide();
     } else {
-        $('.page.closed').hide();
-        $('.page.open').show();
-
         var d = i.dsp;
         var i = i.object;
         var cmpData = [];
@@ -395,10 +405,16 @@ function setDspInfo(i){
         });
 
         var ico = ( d == 'dbm' ? 'google' : ( d=='aap' ? 'amazon' : 'yahoo' ) );
-        $('p.info-title-label > i').removeClass().addClass('fa-fw').addClass('fab').addClass('fa-'+ico);
+        //$('.info-title-label > i').removeClass().addClass('fa-fw').addClass('fab').addClass('fa-'+ico);
+        $('#info-page > h5 > i').removeClass().addClass('fa-fw').addClass('fab').addClass('fa-'+ico);
         ['par','adv','cmp'].forEach(function(v,i){
             if(cmpData[v]) $('[data-info='+v+']').html(cmpData[v].label).attr('data-href', cmpData[v].url).attr('data-dsp', d).attr('data-dsp-id', cmpData[v].data[v]);
         });
+
+        if($("[data-info=cmp]").html()!="-") $(".cmp-add.collapse").addClass("show");
+            else $(".cmp-add.collapse").removeClass("show");
+
+        $("#info-page").show();
 
         load(false);
     }
@@ -431,10 +447,58 @@ function load(s){
         else setTimeout(function(){ $("#loader").fadeOut(250); }, 250);
 }
 
+//Execute campaign selection (requires id, title)
+function selectCmp(data){
+    chrome.storage.sync.set({"selectedCmp" : data.id});
+    $("#info-cmp-display").attr('data-id', data.id);
+    $("#info-cmp-display").attr('data-name', data.text);
+
+    $("#navbar-search select").val([data.id]);
+    $("#navbar-search select").trigger("change");
+    refreshThisCmp();
+}
+
+function linkOut($e){
+    if($e.attr('data-dsp')=='dbm'){
+        var p = $e.attr('data-par-id');
+        var a = $e.attr('data-adv-id');
+        var c = $e.attr('data-dsp-id');
+        var href = 'https://www.google.com/ddm/bidmanager/#ng_nav/p/'+p+'/a/'+a+'/c/'+c;
+        chrome.tabs.create({url:href,active:true});
+    } else if($e.attr('data-dsp')=='aap'){
+        var a = $e.attr('data-adv-id');
+        var c = $e.attr('data-dsp-id');
+        var href = 'https://ams.amazon.com/aap/'+a+'/orders/'+c+'/line-items';
+        chrome.tabs.create({url:href,active:true});
+    } else if($e.attr('data-dsp')=='yahoo'){
+        var c = $e.attr('data-dsp-id');
+        var href = 'https://admanagerplus.yahoo.com/app/campaigns/'+c+'/lines';
+        chrome.tabs.create({url:href,active:true});
+    }
+}
+
 //Dev
 function clearStorage(){
     chrome.storage.sync.clear(function(){
         var error = chrome.runtime.lastError;
         error ? console.error(error) : console.log('Removed campaign data');
+    });
+}
+
+function sortCmps(){
+    chrome.storage.sync.get({"campaigns":[]}, function(o){
+        var cmps = o.campaigns;
+        var newCmps = [];
+        cmps.forEach(function(v,i){
+            if(v!==null){
+                newCmps.push(v);
+            }
+        });
+
+        newCmps.sort(function(a,b){
+            return a.name < b.name ? -1 : ( a.name > b.name ? 1 : 0);
+        });
+
+        chrome.storage.sync.set({"campaigns" : newCmps});
     });
 }

@@ -9,7 +9,8 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme-superhero.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap-theme-superhero.min.css">-->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme-lux.min.css">
     <link rel="stylesheet" type="text/css" href="css/popup-extras.css">
 
     <!-- Meta -->
@@ -22,7 +23,7 @@
     </div>
 
     <!-- Top Nav -->
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand"><img class="img-logo mr-2" /> NeatDSP</span>
 
         <!--<form class="form-inline">
@@ -35,12 +36,54 @@
     </nav>
 
     <div class="container container-fluid page">
+
         <!-- Current campaign info -->
-        <div id="info-cmp">
-            <div class="card" id="info-cmp-display">
-                <div class="card-title" data-cmp="name"></div>
-                <div class="card-body">
-                    <ul id="cmp-list"></ul>
+        <div class="card my-3 bg-dark" id="info-cmp">
+            <div id="info-cmp-display">
+                <h5 class="card-header text-white" data-cmp="name"></h5>
+                <ul class="list-group list-group-flush" id="cmp-list"></ul>
+            </div>
+        </div>
+
+        <!-- Current page info -->
+        <div class="card my-3" id="info-page">
+            <h5 class="card-header d-flex justify-content-between align-items-center">This Page <i class="fab fa-fw"></i></h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="info-title" data-info="cmp">-</div>
+                        <small class="text-muted info-title-label"><i class="fab fa-fw"></i>Campaign</small>
+                    </div>
+                    <button class="btn btn-outline-success btn-sm cmp-add collapse" data-toggle="tooltip" data-placement="bottom" title="Add to Campaign"><i class="fas fa-fw fa-plus"></i></button>
+                </li>
+                <li class="list-group-item">
+                    <div class="info-title" data-info="adv">-</div>
+                    <small class="text-muted info-title-label"><i class="fab fa-fw"></i>Advertiser</small>
+                </li>
+                <li class="list-group-item">
+                    <div class="info-title" data-info="par">-</div>
+                    <small class="text-muted info-title-label"><i class="fab fa-fw"></i>Partner</small>
+                </li>
+            </ul>
+        </div>
+
+        <!-- All campaign info -->
+        <div class="card my-3" id="info-all">
+            <div id="info-all-display">
+                <h5 class="card-header">All Campaigns</h5>
+                <ul class="list-group list-group-flush" id="all-list"></ul>
+            </div>
+        </div>
+
+        <!-- Create new campaign -->
+        <div class="card my-3" id="info-search">
+            <h5 class="card-header">New Campaign</h5>
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Name your new campaign" name="cmp-new" />
+                    <div class="input-group-append">
+                        <button class="btn btn-info cmp-new" type="button"><i class="fas fa-fw fa-plus"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,6 +92,7 @@
     <!-- Javascript -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/select2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="js/popup.js"></script>
 </body>
 </html>
