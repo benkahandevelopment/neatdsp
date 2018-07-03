@@ -246,11 +246,22 @@ $(function(){
         $('#info-cmp-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
         $('#info-cmp-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
 
+        $('#navbar-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
+        $('#navbar-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+
         $('#closed-search-cont select').select2({ placeholder: 'Choose a campaign', data: cmpdata });
         $('#closed-search-cont select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
 
         //On campaign selection
         $('#info-cmp-search select').on('select2:select', function (e) {
+            var d = e.params.data;
+            chrome.storage.sync.set({"selectedCmp" : d.id});
+            $("#info-cmp-display").attr('data-id', d.id);
+            $("#info-cmp-display").attr('data-name', d.text);
+            refreshThisCmp();
+        });
+
+        $('#navbar-search select').on('select2:select', function (e) {
             var d = e.params.data;
             chrome.storage.sync.set({"selectedCmp" : d.id});
             $("#info-cmp-display").attr('data-id', d.id);
