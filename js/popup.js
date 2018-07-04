@@ -1,8 +1,7 @@
 /* On document load */
 $(function(){
     /**
-    * Add event listeners
-    **/
+    * Event listeners **/
 
     //Close window
     $('.btnclose').click(function(){ window.close(); });
@@ -53,7 +52,6 @@ $(function(){
         var $e = $(this).parent().parent();
         linkOut($e); //where $e is an element with data-dsp and relevant ids
     });
-
     $(document.body).on('click', 'ul.closed-response > li', function(){
         var $e = $(this);
         if($e.attr('data-dsp')=='dbm'){
@@ -100,7 +98,7 @@ $(function(){
     $(document.body).on('click', '.cmp-delete', function(){
 
         $("#modalConfirm [data-modal=title]").html("Delete Campaign");
-        $("#modalConfirm [data-modal=body]").html("Are you sure you wish to delete the selected campaign?");
+        $("#modalConfirm [data-modal=body]").html("Are you sure you wish to delete the selected campaign?<br><br>This cannot be undone.");
         $("#modalConfirm button.btn-primary").html("Delete");
         $("#modalConfirm button.btn-secondary").html("Cancel");
         $("#modalConfirm [data-callback]").attr("data-callback",1).attr('data-id', $(this).parent().parent().find('a').attr('data-id'));
@@ -141,7 +139,6 @@ $(function(){
     $(document.body).on('click', '.cmp-add', function(){
         load(true);
         var $t = $(this);
-        //feedback(null, "No campaign selected");
         var obj = $t.parent().find('.info-title');
 
         //DBM cases
@@ -224,7 +221,7 @@ $(function(){
         var n = $.trim($('input[name=cmp-new]').val());
 
         if(n.length<3){
-            feedback(null, "Campaign name must be 3 characters or more");
+            feedback("Invalid Name", "Campaign name must be 3 characters or more");
             load(false);
             return false;
         }
@@ -408,7 +405,7 @@ function refreshThisCmp(){
 
 //Feedback message
 function feedback(title, message){
-    alert(message);
+    msgModal(title || 'Alert', message, 'OK');
 }
 
 //Add response to popup

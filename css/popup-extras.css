@@ -4,7 +4,7 @@ a:hover { text-decoration: none; color: #4BBF73; }
 .page { max-height: 510px; overflow: hidden; overflow-y: scroll; }
 ::-webkit-scrollbar-button { display: none; height: 13px; border-radius: 0px; background-color: #AAA; }
 ::-webkit-scrollbar-button:hover { background-color: #AAA; }
-::-webkit-scrollbar-thumb { background-color: #AAA; border-radius: 2px; }
+::-webkit-scrollbar-thumb { background-color: #AAA; border-radius: 0; }
 ::-webkit-scrollbar-thumb:hover { background-color: #4BBF73; }
 ::-webkit-scrollbar-track { background-color: transparent; border-radius: 0; }
 ::-webkit-scrollbar-track:hover { background-color: transparent; border-radius: 0; }
@@ -97,3 +97,5 @@ a.cmp-row-link::after {
     top: -0.8em;
     opacity: 0.5;
 }
+#info-page li:hover .info-title,
+#info-page li:hover .text-muted { color: #1a1a1a !important; }
