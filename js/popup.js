@@ -18,7 +18,6 @@ $(function(){
             'id' : $(this).attr('data-id'),
             'text' : $(this).html()
         };
-
         load(true);
         selectCmp(a);
     });
@@ -95,8 +94,47 @@ $(function(){
             chrome.storage.sync.set({"campaigns":cmps});
             refreshThisCmp();
         });
+    });
 
-        load(false);
+    //Campaign object - delete (MODAL CALLBACK 1)
+    $(document.body).on('click', '.cmp-delete', function(){
+
+        $("#modalConfirm [data-modal=title]").html("Delete Campaign");
+        $("#modalConfirm [data-modal=body]").html("Are you sure you wish to delete the selected campaign?");
+        $("#modalConfirm button.btn-primary").html("Delete");
+        $("#modalConfirm button.btn-secondary").html("Cancel");
+        $("#modalConfirm [data-callback]").attr("data-callback",1).attr('data-id', $(this).parent().parent().find('a').attr('data-id'));
+        $("#modalConfirm").modal();
+
+    });
+
+    /**
+     * Modals & Responses **/
+
+    $(document.body).on('click', "button[data-callback]", function(){
+        var cb = $(this).attr('data-callback');
+        $("#modalConfirm").modal('hide');
+
+        if(cb==1){
+            var id = $(this).attr('data-id');
+
+            if(id == $('#info-cmp-display').attr('data-id')){
+                console.error("Could not delete currently selected campaign");
+                msgModal("Error", "Cannot delete currently selected campaign. Swap active campaigns to delete the selected object", "OK");
+                return false;
+            }
+
+            load(true);
+            $("#info-all-display li > a[data-id="+id+"]").parent().remove();
+
+            chrome.storage.sync.get({"campaigns":[]}, function(o){
+                var cmps = o.campaigns;
+                cmps.splice(id, 1);
+                chrome.storage.sync.set({"campaigns":cmps});
+
+                refreshThisCmp();
+            })
+        }
     });
 
     //Add 'this page' object to campaign
@@ -472,6 +510,13 @@ function linkOut($e){
         var href = 'https://admanagerplus.yahoo.com/app/campaigns/'+c+'/lines';
         chrome.tabs.create({url:href,active:true});
     }
+}
+
+function msgModal(title, body, btn){
+    $("#modalMessage [data-modal=title]").html(title || "Error");
+    $("#modalMessage [data-modal=body]").html(body || "The quick brown fox jumps over the lazy dog.");
+    $("#modalMessage button.btn-secondary").html(btn || "OK");
+    $("#modalMessage").modal();
 }
 
 //Dev
