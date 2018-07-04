@@ -11,31 +11,30 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-theme-lux.min.css">
     <link rel="stylesheet" type="text/css" href="css/popup-extras.css">
+    <!-- ./styles -->
 
     <!-- Meta -->
     <title>NeatDSP Popup</title>
+    <!-- ./meta -->
+
 </head>
 <body>
-    <!-- Loading Thang -->
-    <div id="loader">
-        <div class="lds-eclipse"><div></div></div>
-    </div>
+    <!-- Loader -->
+    <div id="loader"><div class="lds-eclipse"><div></div></div></div>
+    <!-- ./loader -->
 
     <!-- Top Nav -->
     <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand"><img class="img-logo mr-2" /> NeatDSP</span>
-
-        <!--<form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" />
-        </form>-->
-
         <form class="form-inline" id="navbar-search">
             <select class="form-control" placeholder="Search"></select>
         </form>
     </nav>
 
+    <!-- Main Page -->
     <div class="container container-fluid page">
 
+        <!-- Tabs -->
         <ul class="nav nav-tabs nav-justified mt-3 mb-0" id="nav-tab" role="tablist">
             <li class="nav-item">
                 <a href="#tab-page-1" class="nav-link active" data-toggle="tab" role="tab"><i class="fas fa-location-arrow"></i></a>
@@ -47,9 +46,12 @@
                 <a href="#tab-page-3" class="nav-link" data-toggle="tab" role="tab"><i class="fas fa-cogs"></i></a>
             </li>
         </ul>
+        <!-- ./tabs -->
 
+        <!-- Tab Content -->
         <div class="tab-content">
 
+            <!-- Tab 1 -->
             <div class="tab-cont tab-pane show active" id="tab-page-1" role="tabpanel">
 
                 <!-- Current campaign info -->
@@ -59,6 +61,7 @@
                         <ul class="list-group list-group-flush" id="cmp-list"></ul>
                     </div>
                 </div>
+                <!-- ./current campaign info -->
 
                 <!-- Current page info -->
                 <div class="card" id="info-page">
@@ -81,9 +84,12 @@
                         </li>
                     </ul>
                 </div>
+                <!-- ./current page info -->
 
             </div>
+            <!-- ./tab 1 -->
 
+            <!-- Tab 2 -->
             <div class="tab-cont tab-pane" id="tab-page-2" role="tabpanel">
 
                 <!-- All campaign info -->
@@ -93,6 +99,7 @@
                         <ul class="list-group list-group-flush" id="all-list"></ul>
                     </div>
                 </div>
+                <!-- ./all campaign info -->
 
                 <!-- Create new campaign -->
                 <div class="card" id="info-search">
@@ -106,57 +113,73 @@
                         </div>
                     </div>
                 </div>
+                <!-- ./create new campaign -->
 
             </div>
+            <!-- ./tab 2 -->
 
+            <!-- Tab 3 -->
             <div class="tab-cont tab-pane" id="tab-page-3" role="tabpanel">
+
+                <!-- Settings -->
                 <div class="card" id="info-settings">
                     <h5 class="card-header">Settings</h5>
                     <div class="card-body">
                     </div>
                 </div>
+                <!-- ./settings -->
+
             </div>
+            <!-- ./tab 3 -->
+
         </div>
     </div>
+    <!-- ./main page -->
 
     <!-- Modals -->
-    <div class="modal fade" tabindex="-1" id="modalConfirm">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" data-modal="title"></h5>
-                </div>
-                <div class="modal-body">
-                    <p data-modal="body"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-callback="0"></button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+        <!-- Modal - Confirm -->
+        <div class="modal fade" tabindex="-1" id="modalConfirm">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-modal="title"></h5>
+                    </div>
+                    <div class="modal-body">
+                        <p data-modal="body"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-callback="0"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- Modal - Confirm -->
 
-    <div class="modal fade" tabindex="-1" id="modalMessage">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" data-modal="title"></h5>
-                </div>
-                <div class="modal-body">
-                    <p data-modal="body"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+        <!-- ./modal - Message -->
+        <div class="modal fade" tabindex="-1" id="modalMessage">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-modal="title"></h5>
+                    </div>
+                    <div class="modal-body">
+                        <p data-modal="body"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- ./modal - Message -->
+    <!-- ./modals -->
 
     <!-- Javascript -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/select2.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="js/popup.js"></script>
+    <!-- ./javascript -->
 </body>
 </html>

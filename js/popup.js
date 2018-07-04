@@ -1,363 +1,372 @@
-/* On document load */
 $(function(){
+
     /**
     * Event listeners **/
 
-    //Close window
-    $('.btnclose').click(function(){ window.close(); });
+        //Close window
+        $('.btnclose').click(function(){ window.close(); });
 
-    //Open links
-    $('a[data-target=_blank]:not([disabled])').click(function(){
-        var href = $(this).attr('data-url');
-        chrome.tabs.create({ url:href, active:true });
-    });
-
-    $(document.body).on('click', '#all-list li > a', function(){
-        var a = {
-            'id' : $(this).attr('data-id'),
-            'text' : $(this).html()
-        };
-        load(true);
-        selectCmp(a);
-    });
-
-    //Collapsable boxes - click event
-    $('.collapse').click(function(){
-        var $el = $(this);
-        $el.attr('data-collapse', $el.attr('data-collapse')==1 ? 0 : 1);
-        if($el.attr('data-collapse')==1) $(this).parent().find('.collapsable').slideUp(250);
-            else $(this).parent().find('.collapsable').slideDown(150);
-
-        var c = [];
-        $(".collapse").each(function(v,i){
-            c.push($(this).attr('data-collapse'));
-        })
-        chrome.storage.sync.set({"collapse" : c});
-    });
-
-    //Edit campaign name
-    $(document.body).on('click', '.ico-cont i.fa-edit', function(){
-        var $el = $(this).parent().parent().find('div:eq(0)');
-        $el.find('h3').hide();
-        $el.find('input').val($el.find('h3').html()).show().focus();
-        $(this).removeClass('fa-edit').addClass('fa-check');
-    });
-
-    //Save campaign name
-    $(document.body).on('click', '.ico-cont i.fa-check', function(){ saveCmpName(); });
-    $('input[name=data-cmp]').keypress(function(e){ if(e.which == 13){ saveCmpName(); } })
-
-    //Campaign row - link
-    $(document.body).on('click', '.cmp-row-link', function(){
-        var $e = $(this).parent().parent();
-        linkOut($e); //where $e is an element with data-dsp and relevant ids
-    });
-    $(document.body).on('click', 'ul.closed-response > li', function(){
-        var $e = $(this);
-        if($e.attr('data-dsp')=='dbm'){
-            var p = $e.attr('data-par-id');
-            var a = $e.attr('data-adv-id');
-            var c = $e.attr('data-dsp-id');
-            var href = 'https://www.google.com/ddm/bidmanager/#ng_nav/p/'+p+'/a/'+a+'/c/'+c;
-            chrome.tabs.create({url:href,active:true});
-        } else if($e.attr('data-dsp')=='aap'){
-            var a = $e.attr('data-adv-id');
-            var c = $e.attr('data-dsp-id');
-            var href = 'https://ams.amazon.com/aap/'+a+'/orders/'+c+'/line-items';
-            chrome.tabs.create({url:href,active:true});
-        } else if($e.attr('data-dsp')=='yahoo'){
-            var c = $e.attr('data-dsp-id');
-            var href = 'https://admanagerplus.yahoo.com/app/campaigns/'+c+'/lines';
-            chrome.tabs.create({url:href,active:true});
-        }
-    });
-
-    //Campaign row - delete
-    $(document.body).on('click', '.cmp-btns > .cmp-row-delete', function(){
-        load(true);
-        var $e = $(this).parent().parent();
-        var id = $('#info-cmp-display').attr('data-id');
-        var c_dsp = $e.attr('data-dsp');
-        var c_id = $e.attr('data-dsp-id');
-
-        chrome.storage.sync.get({"campaigns":[]}, function(o){
-            var cmps = o.campaigns;
-
-            cmps[id].cmps.forEach(function(v,i){
-                if(v[0].dsp == c_dsp && v[0].dsp_id == c_id){
-                    cmps[id].cmps.splice(i, 1);
-                }
-            });
-
-            chrome.storage.sync.set({"campaigns":cmps});
-            refreshThisCmp();
+        //Open links 1
+        $('a[data-target=_blank]:not([disabled])').click(function(){
+            var href = $(this).attr('data-url');
+            chrome.tabs.create({ url:href, active:true });
         });
-    });
 
-    //Campaign object - delete (MODAL CALLBACK 1)
-    $(document.body).on('click', '.cmp-delete', function(){
+        //Open links 2
+        $(document.body).on('click', '#all-list li > a', function(){
+            var a = {
+                'id' : $(this).attr('data-id'),
+                'text' : $(this).html()
+            };
+            load(true);
+            selectCmp(a);
+        });
 
-        $("#modalConfirm [data-modal=title]").html("Delete Campaign");
-        $("#modalConfirm [data-modal=body]").html("Are you sure you wish to delete the selected campaign?<br><br>This cannot be undone.");
-        $("#modalConfirm button.btn-primary").html("Delete");
-        $("#modalConfirm button.btn-secondary").html("Cancel");
-        $("#modalConfirm [data-callback]").attr("data-callback",1).attr('data-id', $(this).parent().parent().find('a').attr('data-id'));
-        $("#modalConfirm").modal();
+        //Collapsable boxes - click event
+        $('.collapse').click(function(){
+            var $el = $(this);
+            $el.attr('data-collapse', $el.attr('data-collapse')==1 ? 0 : 1);
+            if($el.attr('data-collapse')==1) $(this).parent().find('.collapsable').slideUp(250);
+                else $(this).parent().find('.collapsable').slideDown(150);
 
-    });
+            var c = [];
+            $(".collapse").each(function(v,i){
+                c.push($(this).attr('data-collapse'));
+            })
+            chrome.storage.sync.set({"collapse" : c});
+        });
+
+        //Edit campaign name
+        $(document.body).on('click', '.ico-cont i.fa-edit', function(){
+            var $el = $(this).parent().parent().find('div:eq(0)');
+            $el.find('h3').hide();
+            $el.find('input').val($el.find('h3').html()).show().focus();
+            $(this).removeClass('fa-edit').addClass('fa-check');
+        });
+
+        //Save campaign name 1
+        $(document.body).on('click', '.ico-cont i.fa-check', function(){ saveCmpName(); });
+
+        //Save campaign name 2
+        $('input[name=data-cmp]').keypress(function(e){ if(e.which == 13){ saveCmpName(); } })
+
+        //Campaign row - link 1
+        $(document.body).on('click', '.cmp-row-link', function(){
+            var $e = $(this).parent().parent();
+            linkOut($e); //where $e is an element with data-dsp and relevant ids
+        });
+
+        //Campaign row - link 2
+        $(document.body).on('click', 'ul.closed-response > li', function(){
+            var $e = $(this);
+            if($e.attr('data-dsp')=='dbm'){
+                var p = $e.attr('data-par-id');
+                var a = $e.attr('data-adv-id');
+                var c = $e.attr('data-dsp-id');
+                var href = 'https://www.google.com/ddm/bidmanager/#ng_nav/p/'+p+'/a/'+a+'/c/'+c;
+                chrome.tabs.create({url:href,active:true});
+            } else if($e.attr('data-dsp')=='aap'){
+                var a = $e.attr('data-adv-id');
+                var c = $e.attr('data-dsp-id');
+                var href = 'https://ams.amazon.com/aap/'+a+'/orders/'+c+'/line-items';
+                chrome.tabs.create({url:href,active:true});
+            } else if($e.attr('data-dsp')=='yahoo'){
+                var c = $e.attr('data-dsp-id');
+                var href = 'https://admanagerplus.yahoo.com/app/campaigns/'+c+'/lines';
+                chrome.tabs.create({url:href,active:true});
+            }
+        });
+
+        //Campaign row - delete
+        $(document.body).on('click', '.cmp-btns > .cmp-row-delete', function(){
+            load(true);
+            var $e = $(this).parent().parent();
+            var id = $('#info-cmp-display').attr('data-id');
+            var c_dsp = $e.attr('data-dsp');
+            var c_id = $e.attr('data-dsp-id');
+
+            chrome.storage.sync.get({"campaigns":[]}, function(o){
+                var cmps = o.campaigns;
+
+                cmps[id].cmps.forEach(function(v,i){
+                    if(v[0].dsp == c_dsp && v[0].dsp_id == c_id){
+                        cmps[id].cmps.splice(i, 1);
+                    }
+                });
+
+                chrome.storage.sync.set({"campaigns":cmps});
+                refreshThisCmp();
+            });
+        });
+
+        //Campaign object - delete (MODAL CALLBACK 1)
+        $(document.body).on('click', '.cmp-delete', function(){
+
+            $("#modalConfirm [data-modal=title]").html("Delete Campaign");
+            $("#modalConfirm [data-modal=body]").html("Are you sure you wish to delete the selected campaign?<br><br>This cannot be undone.");
+            $("#modalConfirm button.btn-primary").html("Delete");
+            $("#modalConfirm button.btn-secondary").html("Cancel");
+            $("#modalConfirm [data-callback]").attr("data-callback",1).attr('data-id', $(this).parent().parent().find('a').attr('data-id'));
+            $("#modalConfirm").modal();
+
+        });
+
 
     /**
      * Modals & Responses **/
 
-    $(document.body).on('click', "button[data-callback]", function(){
-        var cb = $(this).attr('data-callback');
-        $("#modalConfirm").modal('hide');
+        $(document.body).on('click', "button[data-callback]", function(){
+            var cb = $(this).attr('data-callback');
+            $("#modalConfirm").modal('hide');
 
-        if(cb==1){
-            var id = $(this).attr('data-id');
+            if(cb==1){
+                var id = $(this).attr('data-id');
 
-            if(id == $('#info-cmp-display').attr('data-id')){
-                console.error("Could not delete currently selected campaign");
-                msgModal("Error", "Cannot delete currently selected campaign. Swap active campaigns to delete the selected object", "OK");
+                if(id == $('#info-cmp-display').attr('data-id')){
+                    console.error("Could not delete currently selected campaign");
+                    msgModal("Error", "Cannot delete currently selected campaign. Swap active campaigns to delete the selected object", "OK");
+                    return false;
+                }
+
+                load(true);
+                $("#info-all-display li > a[data-id="+id+"]").parent().remove();
+
+                chrome.storage.sync.get({"campaigns":[]}, function(o){
+                    var cmps = o.campaigns;
+                    cmps.splice(id, 1);
+                    chrome.storage.sync.set({"campaigns":cmps});
+
+                    refreshThisCmp();
+                })
+            }
+        });
+
+        //Add 'this page' object to campaign
+        $(document.body).on('click', '.cmp-add', function(){
+            load(true);
+            var $t = $(this);
+            var obj = $t.parent().find('.info-title');
+
+            //DBM cases
+            if(obj.attr("data-dsp")=="dbm"){
+
+                //Campaigns
+                if(obj.attr("data-info")=="cmp"){
+                    //Also save partner/advertiser data
+                    var advId = $('div.info-title[data-info=adv]').attr('data-dsp-id');
+                    var parId = $('div.info-title[data-info=par]').attr('data-dsp-id');
+
+                    chrome.storage.sync.get({"campaigns":[]}, function(o){
+                        var cmps = o.campaigns;
+                        var id = parseInt($("#info-cmp-display").attr("data-id"));
+                        var newArr = {
+                            'dsp' : 'dbm',
+                            'name' : obj.html(),
+                            'dsp_id' : obj.attr('data-dsp-id'),
+                            'adv_id' : advId,
+                            'par_id' : parId
+                        };
+                        cmps[id]['cmps'].push([newArr]);
+                        chrome.storage.sync.set({"campaigns":cmps});
+                        refreshThisCmp();
+                    });
+                }
+            }
+
+            //AAP Cases
+            if(obj.attr("data-dsp")=="aap"){
+
+                //Campaigns
+                if(obj.attr("data-info")=="cmp"){
+                    //Also save partner/advertiser data
+                    var advId = $('div.info-title[data-info=adv]').attr('data-dsp-id');
+                    var parId = $('div.info-title[data-info=par]').attr('data-dsp-id');
+
+                    chrome.storage.sync.get({"campaigns":[]}, function(o){
+                        var cmps = o.campaigns;
+                        var id = parseInt($("#info-cmp-display").attr("data-id"));
+                        var newArr = {
+                            'dsp' : 'aap',
+                            'name' : obj.html(),
+                            'dsp_id' : obj.attr('data-dsp-id'),
+                            'adv_id' : advId,
+                            'par_id' : parId
+                        };
+                        cmps[id]['cmps'].push([newArr]);
+                        chrome.storage.sync.set({"campaigns":cmps});
+                        refreshThisCmp();
+                    });
+                }
+            }
+
+            //Yahoo Cases
+            if(obj.attr("data-dsp")=="yahoo"){
+
+                //Campaigns
+                if(obj.attr("data-info")=="cmp"){
+                    chrome.storage.sync.get({"campaigns":[]}, function(o){
+                        var cmps = o.campaigns;
+                        var id = parseInt($("#info-cmp-display").attr("data-id"));
+                        var newArr = {
+                            'dsp' : 'yahoo',
+                            'name' : obj.html(),
+                            'dsp_id' : obj.attr('data-dsp-id')
+                        };
+                        cmps[id]['cmps'].push([newArr]);
+                        chrome.storage.sync.set({"campaigns":cmps});
+                        refreshThisCmp();
+                    });
+                }
+            }
+        });
+
+        //Create new campaign
+        $(document.body).on('click', '.cmp-new', function(){
+            load(true);
+            var $t = $(this);
+            var n = $.trim($('input[name=cmp-new]').val());
+
+            if(n.length<3){
+                feedback("Invalid Name", "Campaign name must be 3 characters or more");
+                load(false);
                 return false;
             }
 
-            load(true);
-            $("#info-all-display li > a[data-id="+id+"]").parent().remove();
-
+            //Add campaign to storage
             chrome.storage.sync.get({"campaigns":[]}, function(o){
                 var cmps = o.campaigns;
-                cmps.splice(id, 1);
-                chrome.storage.sync.set({"campaigns":cmps});
+                var id = 0;
 
-                refreshThisCmp();
-            })
-        }
-    });
-
-    //Add 'this page' object to campaign
-    $(document.body).on('click', '.cmp-add', function(){
-        load(true);
-        var $t = $(this);
-        var obj = $t.parent().find('.info-title');
-
-        //DBM cases
-        if(obj.attr("data-dsp")=="dbm"){
-
-            //Campaigns
-            if(obj.attr("data-info")=="cmp"){
-                //Also save partner/advertiser data
-                var advId = $('div.info-title[data-info=adv]').attr('data-dsp-id');
-                var parId = $('div.info-title[data-info=par]').attr('data-dsp-id');
-
-                chrome.storage.sync.get({"campaigns":[]}, function(o){
-                    var cmps = o.campaigns;
-                    var id = parseInt($("#info-cmp-display").attr("data-id"));
-                    var newArr = {
-                        'dsp' : 'dbm',
-                        'name' : obj.html(),
-                        'dsp_id' : obj.attr('data-dsp-id'),
-                        'adv_id' : advId,
-                        'par_id' : parId
-                    };
-                    cmps[id]['cmps'].push([newArr]);
-                    chrome.storage.sync.set({"campaigns":cmps});
-                    refreshThisCmp();
-                });
-            }
-        }
-
-        //AAP Cases
-        if(obj.attr("data-dsp")=="aap"){
-
-            //Campaigns
-            if(obj.attr("data-info")=="cmp"){
-                //Also save partner/advertiser data
-                var advId = $('div.info-title[data-info=adv]').attr('data-dsp-id');
-                var parId = $('div.info-title[data-info=par]').attr('data-dsp-id');
-
-                chrome.storage.sync.get({"campaigns":[]}, function(o){
-                    var cmps = o.campaigns;
-                    var id = parseInt($("#info-cmp-display").attr("data-id"));
-                    var newArr = {
-                        'dsp' : 'aap',
-                        'name' : obj.html(),
-                        'dsp_id' : obj.attr('data-dsp-id'),
-                        'adv_id' : advId,
-                        'par_id' : parId
-                    };
-                    cmps[id]['cmps'].push([newArr]);
-                    chrome.storage.sync.set({"campaigns":cmps});
-                    refreshThisCmp();
-                });
-            }
-        }
-
-        //Yahoo Cases
-        if(obj.attr("data-dsp")=="yahoo"){
-
-            //Campaigns
-            if(obj.attr("data-info")=="cmp"){
-                chrome.storage.sync.get({"campaigns":[]}, function(o){
-                    var cmps = o.campaigns;
-                    var id = parseInt($("#info-cmp-display").attr("data-id"));
-                    var newArr = {
-                        'dsp' : 'yahoo',
-                        'name' : obj.html(),
-                        'dsp_id' : obj.attr('data-dsp-id')
-                    };
-                    cmps[id]['cmps'].push([newArr]);
-                    chrome.storage.sync.set({"campaigns":cmps});
-                    refreshThisCmp();
-                });
-            }
-        }
-    });
-
-    //Create new campaign
-    $(document.body).on('click', '.cmp-new', function(){
-        load(true);
-        var $t = $(this);
-        var n = $.trim($('input[name=cmp-new]').val());
-
-        if(n.length<3){
-            feedback("Invalid Name", "Campaign name must be 3 characters or more");
-            load(false);
-            return false;
-        }
-
-        //Add campaign to storage
-        chrome.storage.sync.get({"campaigns":[]}, function(o){
-            var cmps = o.campaigns;
-            var id = 0;
-
-            if(cmps.length < 1){
-                id = 1;
-            } else {
-                cmps.forEach(function(v, i){
-                    if(i >= id) id = i + 1;
-                });
-            }
-
-            cmps[id] = {
-                'name' : n,
-                'cmps' : []
-            };
-            chrome.storage.sync.set({"campaigns" : cmps});
-            chrome.storage.sync.set({"selectedCmp" : id})
-            window.location.reload();
-        });
-
-    });
-    /****** end event listeners ******/
-
-    //Collapsable boxes - load saved data
-    chrome.storage.sync.get({"collapse":[0,0]}, function(e){
-        var c = e.collapse;
-        c.forEach(function(v,i){
-            var $el = $(".collapse:eq("+(parseInt(i))+")");
-            $el.attr("data-collapse",parseInt(v));
-            if(v==1) $el.parent().find('.collapsable').hide();
-        });
-    });
-
-    //Load campaigns
-    chrome.storage.sync.get({"campaigns":[]}, function(o){
-        load(true);
-        var cmps = o.campaigns;
-        var cmpdata = [];
-        if(cmps.length>0){
-            cmps.forEach(function(i,v){
-                if(i!=null) {
-                    cmpdata.push({id:v, text:i.name});
-
-                    //Add to full list output
-                    var $o = $("#all-list");
-                    var x =
-                        "<li class='list-group-item d-flex align-items-center'>"+
-                            "<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
-                            "<a href='#' data-id='"+v+"'>"+i.name+"</a>"+
-                            "<div class='btn-group ml-auto'><button type='button' class='btn btn-sm btn-outline-danger cmp-delete' data-toggle='tooltip' data-placement='bottom' title='Delete Campaign'><i class='fa fa-fw fa-trash'></i></div>"
-                        "</li>";
-                    $o.append(x);
+                if(cmps.length < 1){
+                    id = 1;
+                } else {
+                    cmps.forEach(function(v, i){
+                        if(i >= id) id = i + 1;
+                    });
                 }
+
+                cmps[id] = {
+                    'name' : n,
+                    'cmps' : []
+                };
+                chrome.storage.sync.set({"campaigns" : cmps});
+                chrome.storage.sync.set({"selectedCmp" : id})
+                window.location.reload();
             });
-        }
 
-        //Initialize select2
-        $('#info-cmp-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
-        $('#info-cmp-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+        });
 
-        $('#navbar-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
-        $('#navbar-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
 
-        $('#closed-search-cont select').select2({ placeholder: 'Choose a campaign', data: cmpdata });
-        $('#closed-search-cont select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+    /**
+     * Other launch functions **/
 
-        //On campaign selection
-        $('#info-cmp-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
-        $('#navbar-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
+        //Collapsable boxes - load saved data
+        chrome.storage.sync.get({"collapse":[0,0]}, function(e){
+            var c = e.collapse;
+            c.forEach(function(v,i){
+                var $el = $(".collapse:eq("+(parseInt(i))+")");
+                $el.attr("data-collapse",parseInt(v));
+                if(v==1) $el.parent().find('.collapsable').hide();
+            });
+        });
 
-        $('#closed-search-cont select').on('select2:select', function (e) {
-            var d = e.params.data;
-            chrome.storage.sync.set({"selectedCmp" : d.id});
-
+        //Load campaigns
+        chrome.storage.sync.get({"campaigns":[]}, function(o){
             load(true);
-            var $outEl = $("ul.closed-response");
-            $outEl.html('');
+            var cmps = o.campaigns;
+            var cmpdata = [];
+            if(cmps.length>0){
+                cmps.forEach(function(i,v){
+                    if(i!=null) {
+                        cmpdata.push({id:v, text:i.name});
 
-            //Load objects under campaign
-            chrome.storage.sync.get({"campaigns":[]}, function(o){
-                var cmps = o.campaigns;
-
-                cmps[d.id].cmps.forEach(function(v,i){
-                    var data = v[0];
-                    var icon = (data.dsp=="dbm" ? "google" : (data.dsp=="aap" ? "amazon" : "yahoo"));
-                    var output = "<li data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
-                    "<i class='fab fa-fw fa-"+icon+"'></i>"+data.name+"<!--<span>"+data.dsp_id+"</span>--></li>";
-                    $outEl.append(output);
+                        //Add to full list output
+                        var $o = $("#all-list");
+                        var x =
+                            "<li class='list-group-item d-flex align-items-center'>"+
+                                "<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
+                                "<a href='#' data-id='"+v+"'>"+i.name+"</a>"+
+                                "<div class='btn-group ml-auto'><button type='button' class='btn btn-sm btn-outline-danger cmp-delete' data-toggle='tooltip' data-placement='bottom' title='Delete Campaign'><i class='fa fa-fw fa-trash'></i></div>"
+                            "</li>";
+                        $o.append(x);
+                    }
                 });
+            }
 
-                load(false);
+            //Initialize select2
+            $('#info-cmp-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
+            $('#info-cmp-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+
+            $('#navbar-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
+            $('#navbar-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+
+            $('#closed-search-cont select').select2({ placeholder: 'Choose a campaign', data: cmpdata });
+            $('#closed-search-cont select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+
+            //On campaign selection
+            $('#info-cmp-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
+            $('#navbar-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
+
+            $('#closed-search-cont select').on('select2:select', function (e) {
+                var d = e.params.data;
+                chrome.storage.sync.set({"selectedCmp" : d.id});
+
+                load(true);
+                var $outEl = $("ul.closed-response");
+                $outEl.html('');
+
+                //Load objects under campaign
+                chrome.storage.sync.get({"campaigns":[]}, function(o){
+                    var cmps = o.campaigns;
+
+                    cmps[d.id].cmps.forEach(function(v,i){
+                        var data = v[0];
+                        var icon = (data.dsp=="dbm" ? "google" : (data.dsp=="aap" ? "amazon" : "yahoo"));
+                        var output = "<li data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
+                        "<i class='fab fa-fw fa-"+icon+"'></i>"+data.name+"<!--<span>"+data.dsp_id+"</span>--></li>";
+                        $outEl.append(output);
+                    });
+
+                    load(false);
+                });
+            });
+
+            //Save last campaign selection
+            chrome.storage.sync.get({"selectedCmp":0}, function(x){
+                var id = parseInt(x.selectedCmp);
+                $("#navbar-search select").val([id]);
+                $("#navbar-search select").trigger("change");
+
+                $("#info-cmp-display").attr('data-id', id);
+                $("#info-cmp-display").attr('data-name', $('#navbar-search select option[value='+id+']').html());
+                refreshThisCmp();
             });
         });
 
-        //Save last campaign selection
-        chrome.storage.sync.get({"selectedCmp":0}, function(x){
-            var id = parseInt(x.selectedCmp);
-            $("#navbar-search select").val([id]);
-            $("#navbar-search select").trigger("change");
+        //Load images
+        var img = {};
+        img['logo32'] = chrome.extension.getURL("img/icon32.png");
 
-            $("#info-cmp-display").attr('data-id', id);
-            $("#info-cmp-display").attr('data-name', $('#navbar-search select option[value='+id+']').html());
-            refreshThisCmp();
-        });
-    });
+        //Insert images
+        $(".img-logo").attr('src',img.logo32);
 
-    //Load images
-    var img = {};
-    img['logo16'] = chrome.extension.getURL("img/icon16.png");
-    img['logo32'] = chrome.extension.getURL("img/icon32.png");
-    img['logoac'] = chrome.extension.getURL("img/logoAcc.png");
-
-    //Insert images
-    $(".img-logo").attr('src',img.logo32);
-    $(".img-accuen").css('background-image','url('+img.logoac+')');
-
-    //Get page data
-    chrome.tabs.query({
-        active: true,
-        currentWindow: true
-    }, function(tabs){
-        chrome.tabs.sendMessage(
-            tabs[0].id,
-            { from: 'popup', subject: 'dspInfo' },
-            setDspInfo
-        );
-    });
+        //Get DSP page data
+        chrome.tabs.query({
+                active: true,
+                currentWindow: true
+            }, function(tabs){
+                chrome.tabs.sendMessage(
+                    tabs[0].id,
+                    { from: 'popup', subject: 'dspInfo' },
+                    setDspInfo
+                );
+            });
 });
 
-//Refresh this campaign data
+/**
+ * Functions **/
+
+//Refresh selected campaign data
 function refreshThisCmp(){
     load(true);
     var $outEl = $("ul#cmp-list");
@@ -408,17 +417,9 @@ function feedback(title, message){
     msgModal(title || 'Alert', message, 'OK');
 }
 
-//Add response to popup
+//Add DSP page data to popup
 function setDspInfo(i){
     load(true);
-    /*if(i === undefined) {
-        $('.page.closed').show();
-        $('.page.open').hide();
-        load(false);
-        return false;
-    } else {*/
-        //$('.page.closed').hide();
-        //$('.page.open').show();
     if(i===undefined){
         $("#info-page").hide();
     } else {
@@ -437,7 +438,6 @@ function setDspInfo(i){
         });
 
         var ico = ( d == 'dbm' ? 'google' : ( d=='aap' ? 'amazon' : 'yahoo' ) );
-        //$('.info-title-label > i').removeClass().addClass('fa-fw').addClass('fab').addClass('fa-'+ico);
         $('#info-page > h5 > i').removeClass().addClass('fa-fw').addClass('fab').addClass('fa-'+ico);
         ['par','adv','cmp'].forEach(function(v,i){
             if(cmpData[v]) $('[data-info='+v+']').html(cmpData[v].label).attr('data-href', cmpData[v].url).attr('data-dsp', d).attr('data-dsp-id', cmpData[v].data[v]);
@@ -490,6 +490,7 @@ function selectCmp(data){
     refreshThisCmp();
 }
 
+//Execute outbound hyperlink in new tab
 function linkOut($e){
     if($e.attr('data-dsp')=='dbm'){
         var p = $e.attr('data-par-id');
@@ -509,6 +510,7 @@ function linkOut($e){
     }
 }
 
+//Show modal with title, body, button etc.
 function msgModal(title, body, btn){
     $("#modalMessage [data-modal=title]").html(title || "Error");
     $("#modalMessage [data-modal=body]").html(body || "The quick brown fox jumps over the lazy dog.");
@@ -516,7 +518,10 @@ function msgModal(title, body, btn){
     $("#modalMessage").modal();
 }
 
-//Dev
+/**
+ * Development Functions **/
+
+ //Clear all data
 function clearStorage(){
     chrome.storage.sync.clear(function(){
         var error = chrome.runtime.lastError;
