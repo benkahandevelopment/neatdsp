@@ -99,3 +99,13 @@ a.cmp-row-link::after {
 }
 #info-page li:hover .info-title,
 #info-page li:hover .text-muted { color: #1a1a1a !important; }
+.tab-content {
+    padding: 15px;
+    margin: 0 0 15px 0;
+    border-width: 0 1px 1px 1px;
+    border-color: #eceeef;
+    border-style: solid;
+}
+.nav-tabs .nav-item:last-child {
+    margin-right: 0;
+}
