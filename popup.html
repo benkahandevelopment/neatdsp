@@ -156,7 +156,7 @@
         </div>
         <!-- Modal - Confirm -->
 
-        <!-- ./modal - Message -->
+        <!-- Modal - Message -->
         <div class="modal fade" tabindex="-1" id="modalMessage">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -173,6 +173,42 @@
             </div>
         </div>
         <!-- ./modal - Message -->
+
+        <!-- Modal - Priority -->
+        <div class="modal fade" tabindex="-1" id="modalPriority">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-modal="title">Change the Heat</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>Select priority setting</p>
+                        <div class="form-group text-center" data-group="priority">
+                            <button type="button" data-priority="0" class="btn btn-secondary"><i class="fa fa-fw fa-thermometer-empty"></i></button>
+                            <button type="button" data-priority="1" class="btn btn-secondary"><i class="fa fa-fw fa-thermometer-quarter"></i></button>
+                            <button type="button" data-priority="2" class="btn btn-secondary"><i class="fa fa-fw fa-thermometer-half"></i></button>
+                            <button type="button" data-priority="3" class="btn btn-secondary"><i class="fa fa-fw fa-thermometer-three-quarters"></i></button>
+                            <button type="button" data-priority="4" class="btn btn-secondary"><i class="fa fa-fw fa-thermometer-full"></i></button>
+                        </div>
+
+                        <hr />
+
+                        <p>Add a note</p>
+                        <div class="form-group" data-group="note">
+                            <input type="text" class="form-control" placeholder="Note..." maxlength="140" />
+                            <p class="mt-2 text-muted text-right"><em class data-output="char-count">140</em></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ./modal - Priority -->
+
     <!-- ./modals -->
 
     <!-- Javascript -->
