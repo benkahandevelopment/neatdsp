@@ -106,6 +106,36 @@ a.cmp-row-link::after {
     border-color: #eceeef;
     border-style: solid;
 }
-.nav-tabs .nav-item:last-child {
-    margin-right: 0;
-}
+.nav-tabs .nav-item:last-child { margin-right: 0; }
+.cmp-row-heat { border-color: transparent; }
+/*
+--blue:#007bff
+--indigo:#6610f2
+--purple:#6f42c1
+--pink:#e83e8c
+--red:#d9534f
+--orange:#fd7e14
+--yellow:#f0ad4e
+--green:#4BBF73
+--teal:#20c997
+--cyan:#1F9BCF
+--white:#fff
+--gray:#919aa1
+--gray-dark:#343a40
+--primary:#1a1a1a
+--secondary:#fff
+--success:#4BBF73
+--info:#1F9BCF
+--warning:#f0ad4e
+--danger:#d9534f
+--light:#fff
+--dark:#343a40
+*/
+.fa-fw.fa-thermometer-empty {           color: #919aa1; } /* gray */
+.fa-fw.fa-thermometer-quarter {         color: #4bbf73; } /* green */
+.fa-fw.fa-thermometer-half {            color: #f0ad4e; } /* yellow */
+.fa-fw.fa-thermometer-three-quarters {  color: #fd7e14; } /* orange */
+.fa-fw.fa-thermometer-full {            color: #d9534f; } /* red*/
+
+.nav-tabs .nav-link { color: #ccc; }
+.nav-tabs .nav-link:not(.show):hover {color: #4BBF73; }
