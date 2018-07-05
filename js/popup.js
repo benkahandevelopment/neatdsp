@@ -77,6 +77,63 @@ $(function(){
             }
         });
 
+        //Campaign row - modify priority
+        $(document.body).on('click', '.cmp-row-priority', function(){
+            var data = {};
+            data.cmpid = $("#info-cmp-display").attr('data-id');
+            data.dspid = $(this).parent().parent().attr('data-dsp-id');
+            data.p = $(this).parent().parent().attr('data-priority');
+            data.n = $(this).parent().parent().attr('data-note');
+
+            $("#modalPriority").attr('data-id', data.cmpid);
+            $("#modalPriority").attr('data-dsp-id', data.dspid);
+
+            $("#modalPriority div[data-group=note] > input").val(unescapeHtml(data.n));
+            $("#modalPriority div[data-group=priority] > button").removeClass().addClass("btn").addClass("btn-secondary");
+            $("#modalPriority div[data-group=priority] > button:eq("+data.p+")").removeClass("btn-secondary").addClass('btn-primary');
+            $("#modalPriority").modal();
+        });
+
+        //Priority modal - change selection
+        $("#modalPriority div[data-group=priority] > button").click(function(){
+            var $t = $(this);
+            $("#modalPriority div[data-group=priority] > button").removeClass().addClass("btn").addClass("btn-secondary");
+            $t.removeClass("btn-secondary").addClass("btn-primary");
+        });
+
+        //Priority modal - character count
+        $("#modalPriority [data-group=note] > input").keyup(function(){
+            var c = 140 - $(this).val().length;
+            $(this).parent().find("[data-output=char-count]").html(c);
+            if(c>40) $("[data-output=char-count]").removeClass();
+            if(c<41) $("[data-output=char-count]").removeClass().addClass("text-warning");
+            if(c<1) $("[data-output=char-count]").removeClass().addClass("text-danger");
+        });
+
+        //Priority modal - save
+        $("#modalPriority .modal-footer .btn-success").click(function(){
+            load(true);
+            var data = {};
+            data.cmpid = $("#modalPriority").attr('data-id');
+            data.dspid = $("#modalPriority").attr('data-dsp-id');
+            data.priority = $("#modalPriority div[data-group=priority] > button.btn-primary").attr('data-priority');
+            data.note = $("#modalPriority div[data-group=note] > input").val();
+            data.note = data.note.length > 140 ? data.note.substring(0,140) : data.note;
+
+            chrome.storage.sync.get({"campaigns":[]}, function(o){
+                var cmps = o.campaigns;
+                cmps[data.cmpid].cmps.forEach(function(v,i){
+                    if(v[0].dsp_id==data.dspid){
+                        cmps[data.cmpid].cmps[i][0].priority = data.priority;
+                        cmps[data.cmpid].cmps[i][0].note = data.note;
+                    }
+                });
+                chrome.storage.sync.set({"campaigns": cmps });
+                $("#modalPriority").modal('hide');
+                refreshThisCmp();
+            });
+        })
+
         //Campaign row - delete
         $(document.body).on('click', '.cmp-btns > .cmp-row-delete', function(){
             load(true);
@@ -388,7 +445,12 @@ function refreshThisCmp(){
         cmps[cmpId].cmps.forEach(function(v,i){
             var data = v[0];
             var icon = (data.dsp=="dbm" ? "google" : (data.dsp=="aap" ? "amazon" : "yahoo"));
-            var output = "<li class='cmp-cmp list-group-item d-flex align-items-center' data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
+
+            var priority = data.priority===undefined||data.priority===null ? 0 : data.priority;
+            var priority_a = ['empty', 'quarter', 'half', 'three-quarters', 'full'];
+            var note = data.note===undefined||data.note===null ? "" : escapeHtml(data.note);
+
+            var output = "<li class='cmp-cmp list-group-item d-flex align-items-center' data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"' data-priority='"+priority+"' data-note='"+note+"'>"+
             "<div class='pr-2'>"+
                 "<i class='fab fa-fw fa-"+icon+" mr-2'></i>"+
             "</div><div>"+
@@ -396,7 +458,8 @@ function refreshThisCmp(){
                 "<br/><small class='text-muted text-sm'>"+data.dsp_id+"</small>"+
             "</div>"+
             "<div class='cmp-btns btn-group ml-auto'>"+
-                "<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
+                //"<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
+                "<span class='btn btn-sm btn-outline-secondary cmp-row-priority' data-toggle='tooltip' data-placement='bottom' title='Set Priority'><i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"'></i></span>"+
                 //"<button type='button' class='btn btn-sm ml-1 btn-outline-success cmp-row-link' data-toggle='tooltip' data-placement='bottom' title='Visit this strategy'><i class='cursor-p fa fa-fw fa-external-link-square-alt'></i></button>"+
             "</div></li>";
             $outEl.append(output);
@@ -527,4 +590,24 @@ function clearStorage(){
         var error = chrome.runtime.lastError;
         error ? console.error(error) : console.log('Removed campaign data');
     });
+}
+
+//Escape/unescape
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/'/g, "&#039;")
+        .replace(/"/g, "&quot;");
+}
+
+
+function unescapeHtml(safe) {
+    return safe
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
 }
