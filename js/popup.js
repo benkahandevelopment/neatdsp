@@ -52,7 +52,7 @@ $(function(){
 
         //Campaign row - link 1
         $(document.body).on('click', '.cmp-row-link', function(){
-            var $e = $(this).parent().parent();
+            var $e = $(this).parent().parent().parent();
             linkOut($e); //where $e is an element with data-dsp and relevant ids
         });
 
@@ -81,17 +81,36 @@ $(function(){
         $(document.body).on('click', '.cmp-row-priority', function(){
             var data = {};
             data.cmpid = $("#info-cmp-display").attr('data-id');
-            data.dspid = $(this).parent().parent().attr('data-dsp-id');
-            data.p = $(this).parent().parent().attr('data-priority');
-            data.n = $(this).parent().parent().attr('data-note');
+            data.dspid = $(this).parent().parent().parent().parent().attr('data-dsp-id');
+            data.p = $(this).parent().parent().parent().parent().attr('data-priority');
 
             $("#modalPriority").attr('data-id', data.cmpid);
             $("#modalPriority").attr('data-dsp-id', data.dspid);
 
-            $("#modalPriority div[data-group=note] > input").val(unescapeHtml(data.n));
+            //$("#modalPriority div[data-group=note] > input").val(unescapeHtml(data.n));
+            $("#modalPriority div[data-group=note] > input").val("");
             $("#modalPriority div[data-group=priority] > button").removeClass().addClass("btn").addClass("btn-secondary");
             $("#modalPriority div[data-group=priority] > button:eq("+data.p+")").removeClass("btn-secondary").addClass('btn-primary');
             $("#modalPriority").modal();
+        });
+
+        //Campaign row - show/hide notes
+        $(document.body).on('click', '.toggle-notes', function(){
+            $(this).parent().parent().parent().parent().find('.cmp-details ul').toggle();
+        });
+
+        //Campaign row - meta - delete note
+        $(document.body).on('click', '.note-delete', function(){
+            var $t = $(this);
+            var $p = $t.parent().parent().parent().parent().parent();
+
+            //objects > cmpid > dspid > note timestamp
+            var data = {};
+            data.dspid = $p.attr('data-dsp-id');
+            data.cmpid = $p.parent().parent().attr('data-id');
+            data.ts = $t.attr('data-ts');
+
+            deleteNote(data);
         });
 
         //Priority modal - change selection
@@ -125,7 +144,17 @@ $(function(){
                 cmps[data.cmpid].cmps.forEach(function(v,i){
                     if(v[0].dsp_id==data.dspid){
                         cmps[data.cmpid].cmps[i][0].priority = data.priority;
-                        cmps[data.cmpid].cmps[i][0].note = data.note;
+                        var newnotes = cmps[data.cmpid].cmps[i][0].notes || [];
+                        newnotes.push(JSON.stringify({
+                            'msg' : data.note,
+                            'timestamp' : + new Date()
+                        }));
+
+                        newnotes.sort(function(a,b){
+                            return JSON.parse(a).timestamp > JSON.parse(b).timestamp ? -1 : 1;
+                        });
+
+                        cmps[data.cmpid].cmps[i][0].notes = newnotes;
                     }
                 });
                 chrome.storage.sync.set({"campaigns": cmps });
@@ -448,20 +477,36 @@ function refreshThisCmp(){
 
             var priority = data.priority===undefined||data.priority===null ? 0 : data.priority;
             var priority_a = ['empty', 'quarter', 'half', 'three-quarters', 'full'];
-            var note = data.note===undefined||data.note===null ? "" : escapeHtml(data.note);
 
-            var output = "<li class='cmp-cmp list-group-item d-flex align-items-center' data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"' data-priority='"+priority+"' data-note='"+note+"'>"+
-            "<div class='pr-2'>"+
-                "<i class='fab fa-fw fa-"+icon+" mr-2'></i>"+
-            "</div><div>"+
-                "<a href='#' class='cmp-row-link'>"+data.name+"</a>"+
-                "<br/><small class='text-muted text-sm'>"+data.dsp_id+"</small>"+
-            "</div>"+
-            "<div class='cmp-btns btn-group ml-auto'>"+
-                //"<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
-                "<span class='btn btn-sm btn-outline-secondary cmp-row-priority' data-toggle='tooltip' data-placement='bottom' title='Set Priority'><i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"'></i></span>"+
-                //"<button type='button' class='btn btn-sm ml-1 btn-outline-success cmp-row-link' data-toggle='tooltip' data-placement='bottom' title='Visit this strategy'><i class='cursor-p fa fa-fw fa-external-link-square-alt'></i></button>"+
-            "</div></li>";
+            //var note = data.note===undefined||data.note===null ? "" : escapeHtml(data.note);
+            var notes = data.notes===undefined||data.notes===null ? false : data.notes;
+            var notes_output = notes ? "<ul class='cmp-details-notes'>": false;
+            var notes_num = 0;
+            if(notes){
+                notes.forEach(function(v,i){
+                    notes_num++;
+                    var t = JSON.parse(v);
+                    var d = moment(t.timestamp).fromNow();
+                    var l = moment(t.timestamp).format("hh:mm \on MMMM Do");
+                    notes_output += "<li><span title='"+l+"'><a href='#' class='note-delete' data-ts='"+t.timestamp+"'>Delete</a> "+d+"</span>"+t.msg+"</li>"; //data-toggle='tooltip' data-placement='left'
+                });
+            }
+            notes_output += notes_output ? "</ul>" : false;
+
+            var output = "<li class='cmp-cmp list-group-item' data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"' data-priority='"+priority+"'>"+
+            "<div class='d-flex align-items-center'>"+
+                "<div class='pr-2'>"+
+                    "<i class='fab fa-fw fa-"+icon+" mr-2'></i>"+
+                "</div><div>"+
+                    "<a href='#' class='cmp-row-link'>"+data.name+"</a>"+
+                    "<br/><small class='text-muted text-sm'>"+data.dsp_id+(notes_num > 0 ? " | <a href='#' class='toggle-notes badge badge-pill badge-info'><i class='far fa-fw fa-comment'></i>&nbsp;"+notes_num+"</a></small>" : "")+
+                "</div>"+
+                "<div class='cmp-btns btn-group ml-auto'>"+
+                    //"<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
+                    "<span class='btn btn-sm btn-outline-secondary cmp-row-priority' data-toggle='tooltip' data-placement='bottom' title='Add details'><i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"'></i></span>"+
+                    //"<button type='button' class='btn btn-sm ml-1 btn-outline-success cmp-row-link' data-toggle='tooltip' data-placement='bottom' title='Visit this strategy'><i class='cursor-p fa fa-fw fa-external-link-square-alt'></i></button>"+
+                "</div>"+
+            "</div><div class='cmp-details'>"+(notes_output ? notes_output : "")+"</div></li>";
             $outEl.append(output);
         });
 
@@ -579,6 +624,41 @@ function msgModal(title, body, btn){
     $("#modalMessage [data-modal=body]").html(body || "The quick brown fox jumps over the lazy dog.");
     $("#modalMessage button.btn-secondary").html(btn || "OK");
     $("#modalMessage").modal();
+}
+
+//Delete note (requires cmpid, dspid, ts (note timestamp))
+function deleteNote(data){
+    load(true);
+    var a = data.dspid;
+    var b = data.cmpid;
+    var c = data.ts;
+
+    chrome.storage.sync.get({"campaigns":[]}, function(o){
+        var cmps = o.campaigns;
+        var BreakException = {};
+
+        try {
+            //Find overall object
+            cmps[b].cmps.forEach(function(v,i){
+                if(v[0].dsp_id==a){
+                    v[0].notes.forEach(function(x,y){
+                        if(JSON.parse(x).timestamp==c){
+                            //Note found
+                            var n = v[0].notes;
+                            n.splice(y,1);
+
+                            cmps[b].cmps[i][0].notes = n;
+                            chrome.storage.sync.set({"campaigns":cmps});
+                            refreshThisCmp();
+                            throw BreakException;
+                        }
+                    })
+                }
+            });
+        } catch(e){
+            if(e !== BreakException) throw e;
+        }
+    });
 }
 
 /**
