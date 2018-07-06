@@ -139,3 +139,45 @@ a.cmp-row-link::after {
 
 .nav-tabs .nav-link { color: #ccc; }
 .nav-tabs .nav-link:not(.show):hover {color: #4BBF73; }
+
+.cmp-details {
+    display: block;
+}
+
+ul.cmp-details-notes {
+    margin: 5px 0 0 0; padding: 0; list-style: none;
+    display: none;
+}
+ul.cmp-details-notes li {
+    background-color: #eceeef;
+    padding: 10px;
+    margin: 5px 0 21px 0;
+    position: relative;
+}
+ul.cmp-details-notes li::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border-color: transparent;
+    border-style: solid;
+
+    border-width: 5px;
+    border-top: 5px solid #eceeef;
+    border-left: 5px solid #eceeef;
+}
+ul.cmp-details-notes li span {
+    position: absolute;
+    line-height: 16px;
+    top: 100%;
+    right: 0;
+    text-align: right;
+    font-size: 10px;
+}
+
+ul.cmp-details-notes li:hover span a {
+    display: inline;
+}
+ul.cmp-details-notes li span a {
+    display: none;
+}
