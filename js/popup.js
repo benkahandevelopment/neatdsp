@@ -346,16 +346,6 @@ $(function(){
     /**
      * Other launch functions **/
 
-        //Collapsable boxes - load saved data
-        chrome.storage.sync.get({"collapse":[0,0]}, function(e){
-            var c = e.collapse;
-            c.forEach(function(v,i){
-                var $el = $(".collapse:eq("+(parseInt(i))+")");
-                $el.attr("data-collapse",parseInt(v));
-                if(v==1) $el.parent().find('.collapsable').hide();
-            });
-        });
-
         //Load campaigns
         chrome.storage.sync.get({"campaigns":[]}, function(o){
             load(true);
@@ -368,6 +358,7 @@ $(function(){
 
                         //Add to full list output
                         var $o = $("#all-list");
+                        $o.html("");
                         var x =
                             "<li class='list-group-item d-flex align-items-center'>"+
                                 "<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
@@ -461,7 +452,12 @@ function refreshThisCmp(){
     var $e = $("#info-cmp-display");
     var cmpId = $e.attr('data-id');
 
-    if(cmpId==0||cmpId===undefined) return false;
+    if(cmpId==0||cmpId===undefined) {
+        //No campaigns in system - most likely first launch!
+        $e.find('[data-cmp=name]').html("No Saved Campaigns").parent().parent().removeClass("mb-3");
+        load(false);
+        return false;
+    }
 
     $e.find('[data-cmp=name]').html($e.attr('data-name'));
     $e.find('[data-cmp=id]').html("#"+cmpId);
