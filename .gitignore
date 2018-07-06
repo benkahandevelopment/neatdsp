@@ -6,6 +6,9 @@
 */bootstrap*
 /_*
 
+#Backup files
+*.bak.*
+
 #Asset folders
 ico
 img
