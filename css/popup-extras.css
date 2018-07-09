@@ -80,6 +80,8 @@ a:hover { text-decoration: none; color: #4BBF73; }
 #all-list span.badge { line-height: inherit !important; }
 #all-list .btn-group { opacity: 0; }
 #all-list li:hover .btn-group { opacity: 1; }
+#all-list li i { margin-right: 5px; }
+#all-list li > div > small { margin-left: 5px; padding-left: 5px; border-left: 1px solid #eceeef; }
 .info-title-label i { display: none; }
 a[target=_blank]:not(.noIcon)::after,
 a.cmp-row-link::after {
@@ -131,6 +133,29 @@ a.cmp-row-link::after {
 --light:#fff
 --dark:#343a40
 */
+
+.colour-blue { color: #007bff; }
+.colour-indigo { color: #6610f2; }
+.colour-purple { color: #6f42c1; }
+.colour-pink { color: #e83e8c; }
+.colour-red { color: #d9534f; }
+.colour-orange { color: #fd7e14; }
+.colour-yellow { color: #f0ad4e; }
+.colour-green { color: #4BBF73; }
+.colour-teal { color: #20c997; }
+.colour-cyan { color: #1F9BCF; }
+.colour-white { color: #fff; }
+.colour-gray { color: #919aa1; }
+.colour-gray-dark { color: #343a40; }
+.colour-primary { color: #1a1a1a; }
+.colour-secondary { color: #fff; }
+.colour-success { color: #4BBF73; }
+.colour-info { color: #1F9BCF; }
+.colour-warning { color: #f0ad4e; }
+.colour-danger { color: #d9534f; }
+.colour-light { color: #fff; }
+.colour-dark { color: #343a40; }
+
 .fa-fw.fa-thermometer-empty {           color: #919aa1; } /* gray */
 .fa-fw.fa-thermometer-quarter {         color: #4bbf73; } /* green */
 .fa-fw.fa-thermometer-half {            color: #f0ad4e; } /* yellow */
@@ -147,12 +172,15 @@ a.cmp-row-link::after {
 ul.cmp-details-notes {
     margin: 5px 0 0 0; padding: 0; list-style: none;
     display: none;
+    max-height: 150px;
+    overflow-y: auto;
 }
 ul.cmp-details-notes li {
     background-color: #eceeef;
     padding: 10px;
     margin: 5px 0 21px 0;
     position: relative;
+    font-size: 12px;
 }
 ul.cmp-details-notes li::after {
     content: '';
@@ -168,16 +196,21 @@ ul.cmp-details-notes li::after {
 }
 ul.cmp-details-notes li span {
     position: absolute;
-    line-height: 16px;
+    line-height: 14px;
+    margin-top: 2px;
     top: 100%;
     right: 0;
     text-align: right;
     font-size: 10px;
 }
 
-ul.cmp-details-notes li:hover span a {
+ul.cmp-details-notes:hover span a {
     display: inline;
 }
 ul.cmp-details-notes li span a {
+    margin-right: 5px;
     display: none;
 }
+
+ul.cmp-details-notes li a i { color: #919aa1; }
+ul.cmp-details-notes li a:hover i.fa-trash { color: #d9534f; }
