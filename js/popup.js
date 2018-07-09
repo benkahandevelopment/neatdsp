@@ -352,13 +352,13 @@ $(function(){
             var cmps = o.campaigns;
             var cmpdata = [];
             if(cmps.length>0){
+                //Add to full list output
+                var $o = $("#all-list");
+                $o.html("");
                 cmps.forEach(function(i,v){
                     if(i!=null) {
                         cmpdata.push({id:v, text:i.name});
 
-                        //Add to full list output
-                        var $o = $("#all-list");
-                        $o.html("");
                         var x =
                             "<li class='list-group-item d-flex align-items-center'>"+
                                 "<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
