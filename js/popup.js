@@ -81,8 +81,9 @@ $(function(){
         $(document.body).on('click', '.cmp-row-priority', function(){
             var data = {};
             data.cmpid = $("#info-cmp-display").attr('data-id');
-            data.dspid = $(this).parent().parent().parent().parent().attr('data-dsp-id');
-            data.p = $(this).parent().parent().parent().parent().attr('data-priority');
+            data.dspid = $(this).parent().parent().parent().attr('data-dsp-id');
+            data.p = $(this).parent().parent().parent().attr('data-priority');
+            console.log(data);
 
             $("#modalPriority").attr('data-id', data.cmpid);
             $("#modalPriority").attr('data-dsp-id', data.dspid);
@@ -90,7 +91,7 @@ $(function(){
             //$("#modalPriority div[data-group=note] > input").val(unescapeHtml(data.n));
             $("#modalPriority div[data-group=note] > input").val("");
             $("#modalPriority div[data-group=priority] > button").removeClass().addClass("btn").addClass("btn-secondary");
-            $("#modalPriority div[data-group=priority] > button:eq("+data.p+")").removeClass("btn-secondary").addClass('btn-primary');
+            $("#modalPriority div[data-group=priority] > button:eq("+parseInt(data.p)+")").removeClass("btn-secondary").addClass('btn-primary');
             $("#modalPriority").modal();
         });
 
@@ -144,20 +145,23 @@ $(function(){
                 cmps[data.cmpid].cmps.forEach(function(v,i){
                     if(v[0].dsp_id==data.dspid){
                         cmps[data.cmpid].cmps[i][0].priority = data.priority;
-                        var newnotes = cmps[data.cmpid].cmps[i][0].notes || [];
-                        newnotes.push(JSON.stringify({
-                            'msg' : data.note,
-                            'timestamp' : + new Date()
-                        }));
 
-                        newnotes.sort(function(a,b){
-                            return JSON.parse(a).timestamp > JSON.parse(b).timestamp ? -1 : 1;
-                        });
+                        if(data.note.length>0){
+                            var newnotes = cmps[data.cmpid].cmps[i][0].notes || [];
+                            newnotes.push(JSON.stringify({
+                                'msg' : data.note,
+                                'timestamp' : + new Date()
+                            }));
 
-                        cmps[data.cmpid].cmps[i][0].notes = newnotes;
+                            newnotes.sort(function(a,b){
+                                return JSON.parse(a).timestamp > JSON.parse(b).timestamp ? -1 : 1;
+                            });
+
+                            cmps[data.cmpid].cmps[i][0].notes = newnotes;
+                        }
                     }
                 });
-                chrome.storage.sync.set({"campaigns": cmps });
+                chrome.storage.sync.set({ "campaigns": cmps });
                 $("#modalPriority").modal('hide');
                 refreshThisCmp();
             });
@@ -359,10 +363,24 @@ $(function(){
                     if(i!=null) {
                         cmpdata.push({id:v, text:i.name});
 
+                        var notes = 0; var priority = 0;
+                        var priority_a = ['empty', 'quarter', 'half', 'three-quarters', 'full'];
+
+                        //Get length of campaign notes, average status
+                        i.cmps.forEach(function(x,y){
+                            priority += parseInt(x[0].priority) || 0;
+                            notes += x[0].notes ? x[0].notes.length : 0;
+                        });
+
+                        priority = priority / cmps.length;
+                        priority = Math.ceil(priority);
+
                         var x =
                             "<li class='list-group-item d-flex align-items-center'>"+
-                                "<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
-                                "<a href='#' data-id='"+v+"'>"+i.name+"</a>"+
+                                //"<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
+                                "<i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"'></i>"+
+                                "<i class='far fa-fw fa-comment"+(notes > 0 ? " colour-green' data-toggle='tooltip' data-placement='bottom' title='"+notes+" note"+(notes===1 ? "" : "s")+"'" : "'")+"></i>"+
+                                "<div><a href='#' data-id='"+v+"'>"+i.name+"</a><small class='text-muted'>"+i.cmps.length+"</small></div>"+
                                 "<div class='btn-group ml-auto'><button type='button' class='btn btn-sm btn-outline-danger cmp-delete' data-toggle='tooltip' data-placement='bottom' title='Delete Campaign'><i class='fa fa-fw fa-trash'></i></div>"
                             "</li>";
                         $o.append(x);
@@ -480,11 +498,11 @@ function refreshThisCmp(){
             var notes_num = 0;
             if(notes){
                 notes.forEach(function(v,i){
-                    notes_num++;
                     var t = JSON.parse(v);
                     var d = moment(t.timestamp).fromNow();
-                    var l = moment(t.timestamp).format("hh:mm \on MMMM Do");
-                    notes_output += "<li><span title='"+l+"'><a href='#' class='note-delete' data-ts='"+t.timestamp+"'>Delete</a> "+d+"</span>"+t.msg+"</li>"; //data-toggle='tooltip' data-placement='left'
+                    var l = moment(t.timestamp).format("MMMM Do [at] hh:mm");
+                    notes_output += "<li data-num='"+notes_num+"'><span title='"+l+"'><a href='#' class='note-delete' data-ts='"+t.timestamp+"'><i class='fa fa-fw fa-trash'></i></a> "+d+"</span>"+t.msg+"</li>"; //data-toggle='tooltip' data-placement='left'
+                    notes_num++;
                 });
             }
             notes_output += notes_output ? "</ul>" : false;
@@ -495,7 +513,7 @@ function refreshThisCmp(){
                     "<i class='fab fa-fw fa-"+icon+" mr-2'></i>"+
                 "</div><div>"+
                     "<a href='#' class='cmp-row-link'>"+data.name+"</a>"+
-                    "<br/><small class='text-muted text-sm'>"+data.dsp_id+(notes_num > 0 ? " | <a href='#' class='toggle-notes badge badge-pill badge-info'><i class='far fa-fw fa-comment'></i>&nbsp;"+notes_num+"</a></small>" : "")+
+                    "<br/><small class='text-muted text-sm'>"+data.dsp_id+(notes_num > 0 ? " | <a href='#' class='toggle-notes badge badge-pill badge-info'><i class='far fa-fw fa-comment'></i>&nbsp;"+notes_num+"</a>" : "")+"</small>"+
                 "</div>"+
                 "<div class='cmp-btns btn-group ml-auto'>"+
                     //"<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
