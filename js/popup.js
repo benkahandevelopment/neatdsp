@@ -13,7 +13,7 @@ $(function(){
         });
 
         //Open links 2
-        $(document.body).on('click', '#all-list li > a', function(){
+        $(document.body).on('click', '#all-list li a.cmp-name', function(){
             var a = {
                 'id' : $(this).attr('data-id'),
                 'text' : $(this).html()
@@ -83,7 +83,6 @@ $(function(){
             data.cmpid = $("#info-cmp-display").attr('data-id');
             data.dspid = $(this).parent().parent().parent().attr('data-dsp-id');
             data.p = $(this).parent().parent().parent().attr('data-priority');
-            console.log(data);
 
             $("#modalPriority").attr('data-id', data.cmpid);
             $("#modalPriority").attr('data-dsp-id', data.dspid);
@@ -373,14 +372,15 @@ $(function(){
                         });
 
                         priority = priority / cmps.length;
+                        priority_acc = priority.toFixed(2);
                         priority = Math.ceil(priority);
 
                         var x =
                             "<li class='list-group-item d-flex align-items-center'>"+
                                 //"<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
-                                "<i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"'></i>"+
+                                "<i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"' data-toggle='tooltip' data-placement='bottom' title='Priority "+priority_acc+"'></i>"+
                                 "<i class='far fa-fw fa-comment"+(notes > 0 ? " colour-green' data-toggle='tooltip' data-placement='bottom' title='"+notes+" note"+(notes===1 ? "" : "s")+"'" : "'")+"></i>"+
-                                "<div><a href='#' data-id='"+v+"'>"+i.name+"</a><small class='text-muted'>"+i.cmps.length+"</small></div>"+
+                                "<div><a href='#' class='cmp-name' data-id='"+v+"'>"+i.name+"</a><small class='text-muted'>"+i.cmps.length+"</small></div>"+
                                 "<div class='btn-group ml-auto'><button type='button' class='btn btn-sm btn-outline-danger cmp-delete' data-toggle='tooltip' data-placement='bottom' title='Delete Campaign'><i class='fa fa-fw fa-trash'></i></div>"
                             "</li>";
                         $o.append(x);
@@ -501,7 +501,7 @@ function refreshThisCmp(){
                     var t = JSON.parse(v);
                     var d = moment(t.timestamp).fromNow();
                     var l = moment(t.timestamp).format("MMMM Do [at] hh:mm");
-                    notes_output += "<li data-num='"+notes_num+"'><span title='"+l+"'><a href='#' class='note-delete' data-ts='"+t.timestamp+"'><i class='fa fa-fw fa-trash'></i></a> "+d+"</span>"+t.msg+"</li>"; //data-toggle='tooltip' data-placement='left'
+                    notes_output += "<li data-num='"+notes_num+"'><span title='"+l+"'><a href='#' class='note-delete' data-ts='"+t.timestamp+"'><i class='fa fa-fw fa-trash'></i></a> "+d+"</span>"+escapeHtml(t.msg)+"</li>"; //data-toggle='tooltip' data-placement='left'
                     notes_num++;
                 });
             }
