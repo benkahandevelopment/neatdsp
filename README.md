@@ -1,12 +1,21 @@
-# NeatDSP Package
+# NeatDSP <img src="https://github.com/benkahandevelopment/neatdsp/blob/master/img/icon128.png" width="75" align="left" />
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+
+[![GitHub release](https://img.shields.io/github/release/benkahandevelopment/neatdsp.svg)](https://github.com/benkahandevelopment/neatdsp/releases)
+[![License: Apache 2](https://img.shields.io/github/license/benkahandevelopment/neatdsp.svg)](https://github.com/benkahandevelopment/neatdsp/blob/master/LICENSE)
+[![Web store version](https://img.shields.io/chrome-web-store/v/baafemcooelokbkmmmhkbemikigoeapn.svg)](https://chrome.google.com/webstore/detail/neatdsp/baafemcooelokbkmmmhkbemikigoeapn)
+
+---
 
 Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Manager, Yahoo!/Oath Brightroll, Amazon Advertising Platform and more.
 
-![Screenshot of Package](https://i.imgur.com/Z5syO65.png)
+<a href="https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn" target="_blank">
+<img src="https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png"/>
+</a>
 
 ## Usage
+
+### Installation
 
 **Important**: Downloading the package from GitHub means you are likely to be working on an alpha- or beta- prerelease package edition. For the most up-to-date edition of this package, install from the Google Chrome Store *[not yet uploaded]*
 
@@ -24,6 +33,8 @@ Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Man
 * Add an object to your campaign object by visiting the page in your browser. If you are on a supported page (DBM, Yahoo! Brightroll, Amazon AAP are currently supported), you will see the "This Page" heading under the first tab. If there is an object that can be added to your campaign, you will see a `+` symbol next to the name, Clicking this will add it to the campaign
 
 * You can add notes and a priority level to each object. To do so, click the thermometer button to the right of the campaign. All notes are logged by timestamp and ordered by most recent
+
+![Screenshot of Package](https://i.imgur.com/Z5syO65.png)
 
 ## Contributing
 
