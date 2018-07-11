@@ -17,7 +17,7 @@ Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Man
 
 ### Installation
 
-**Important**: Downloading the package from GitHub means you are likely to be working on an alpha- or beta- prerelease package edition. For the most up-to-date edition of this package, install from the Google Chrome Store *[not yet uploaded]*
+**Important**: Downloading the package from GitHub means you are likely to be working on an alpha- or beta- pre-release package edition. For the most up-to-date edition of this package, [install from the Google Chrome Store](https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn)
 
 1. Download package to a local folder
 2. Visit `chrome://extensions` in your Chrome browser (or click _Settings_ > _Extensions_)
