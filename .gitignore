@@ -1,15 +1,14 @@
 #Library files
 */_*
-*/fa*
-*/jquery*
-*/select2*
-*/bootstrap*
-/_*
+#*/fa*
+#*/jquery*
+#*/select2*
+#*/bootstrap*
 
 #Backup files
 *.bak.*
 
 #Asset folders
-ico
+#ico
 #img
-webfonts
+#webfonts
