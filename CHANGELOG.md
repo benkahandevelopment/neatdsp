@@ -1,0 +1,13 @@
+# NeatDSP <img src="https://github.com/benkahandevelopment/neatdsp/blob/master/img/icon128.png" width="75" align="left" />
+
+
+[![GitHub release](https://img.shields.io/github/release/benkahandevelopment/neatdsp.png)](https://github.com/benkahandevelopment/neatdsp/releases)
+[![License: Apache 2](https://img.shields.io/github/license/benkahandevelopment/neatdsp.png)](https://github.com/benkahandevelopment/neatdsp/blob/master/LICENSE)
+[![Web store version](https://img.shields.io/chrome-web-store/v/baafemcooelokbkmmmhkbemikigoeapn.png)](https://chrome.google.com/webstore/detail/neatdsp/baafemcooelokbkmmmhkbemikigoeapn)
+
+---
+## Release Notes
+### 1.x.x
+
+- ***1.0.x***
+  - ***1.0.0*** - Initial release
