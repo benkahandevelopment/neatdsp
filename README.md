@@ -49,4 +49,6 @@ Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Man
 
 ## Versioning
 
+[See full changelog here](CHANGELOG.md).
+
 I use [SemVer](http://semver.org/) for versioning.
