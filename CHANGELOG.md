@@ -10,4 +10,5 @@
 ### 1.x.x
 
 - ***1.0.x***
+  - ***1.1.0*** - Added version info, data export, data import (campaigns only)
   - ***1.0.0*** - Initial release
