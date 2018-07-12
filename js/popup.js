@@ -200,6 +200,33 @@ $(function(){
 
         });
 
+        //Settings - versions
+        $.get('https://raw.githubusercontent.com/benkahandevelopment/neatdsp/master/manifest.json', function(d){
+            $('p[data-version=avail] > span').html(d.version);
+            var avail = d.version;
+            $.get('manifest.json', function(d){
+                $('p[data-version=your] > span').html(d.version);
+                var your = d.version;
+                if(versionCompare(avail, your)>0) $("#update-links").show();
+            }, 'json');
+        }, 'json');
+
+        //Settings - file download for exportAll\
+        $("#exportFile-btn").click(exportAll);
+
+        //Settings - file upload for import
+        $("#importFile-btn").click(function(){ $("#importFile").click(); });
+        $("#importFile").change(function(){
+            var fr = new FileReader();
+            fr.onload = function(){
+                data = fr.result;
+                data = JSON.parse(data);
+                data_c = data.campaigns;
+                chrome.storage.sync.set({"campaigns" : data_c});
+                msgModal("Import", "Successfully imported campaign data", "Awesome");
+            }
+            fr.readAsText($("#importFile").prop('files')[0]);
+        });
 
     /**
      * Modals & Responses **/
@@ -696,7 +723,6 @@ function escapeHtml(unsafe) {
         .replace(/"/g, "&quot;");
 }
 
-
 function unescapeHtml(safe) {
     return safe
         .replace(/&amp;/g, '&')
@@ -704,4 +730,59 @@ function unescapeHtml(safe) {
         .replace(/&gt;/g, '>')
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
+}
+
+//Version comparison
+function versionCompare(v1, v2, options) {
+    var lexicographical = options && options.lexicographical,
+        zeroExtend = options && options.zeroExtend,
+        v1parts = v1.split('.'),
+        v2parts = v2.split('.');
+
+    function isValidPart(x) {
+        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+    }
+
+    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) return NaN;
+
+    if (zeroExtend) {
+        while (v1parts.length < v2parts.length) v1parts.push("0");
+        while (v2parts.length < v1parts.length) v2parts.push("0");
+    }
+
+    if (!lexicographical) {
+        v1parts = v1parts.map(Number);
+        v2parts = v2parts.map(Number);
+    }
+
+    for (var i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length == i) return 1;
+        if (v1parts[i] == v2parts[i]) continue;
+        else if (v1parts[i] > v2parts[i]) return 1;
+        else return -1;
+    }
+
+    if (v1parts.length != v2parts.length) return -1;
+
+    return 0;
+}
+
+//Download user saved campaign data
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function exportAll(){
+    chrome.storage.sync.get(null, function(i){
+        download("NeatDSP-export-"+moment(new Date()).format("YYYYMMDD-HHmm")+".txt", JSON.stringify(i));
+    });
 }

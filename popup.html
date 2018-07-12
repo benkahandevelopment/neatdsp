@@ -124,10 +124,27 @@
             <div class="tab-cont tab-pane" id="tab-page-3" role="tabpanel">
 
                 <!-- Settings -->
-                <div class="card" id="info-settings">
+                <div class="card mb-3" id="info-settings">
                     <h5 class="card-header">Settings</h5>
                     <div class="card-body">
-                        <em class="text-muted m-3 text-center d-block">Coming in future version</em>
+                        <input id="importFile" type="file" class="v-hidden" />
+                        <button type="button" id="exportFile-btn" class="btn btn-sm btn-secondary"><i class="fa fa-fw fa-download"></i>&nbsp;Export Data</button>
+                        <button type="button" id="importFile-btn" class="btn btn-sm btn-secondary"><i class="fa fa-fw fa-upload"></i>&nbsp;Import Data</button>
+                    </div>
+                </div>
+
+                <div class="card" id="info-update">
+                    <h5 class="card-header">Version</h5>
+                    <div class="card-body">
+                        <div id="update-info">
+                            <p data-version="your">Your version: <span></span></p>
+                            <p data-version="avail">Available version: <span></span></p>
+                        </div>
+                        <div id="update-links">
+                            <p class="colour-cyan">Update available!</p>
+                            <a href="https://github.com/benkahandevelopment/neatdsp" target="_blank" class="btn btn-sm btn-info"><i class="fab fa-fw fa-github"></i>&nbsp;GitHub Package</a>
+                            <a href="https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn" target="_blank" class="btn btn-sm btn-info"><i class="fab fa-fw fa-chrome"></i>&nbsp;Chrome Web Store</a>
+                        </div>
                     </div>
                 </div>
                 <!-- ./settings -->
