@@ -47,8 +47,18 @@ Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Man
 8.  Create new Pull Request
 
 
-## Versioning
+# Meta Details
 
-[See full changelog here](CHANGELOG.md).
+## Release History
+
+See the [Release History](https://github.com/benkahandevelopment/neatdsp/releases) for a list of all releases.
 
 I use [SemVer](http://semver.org/) for versioning.
+
+## Release Notes
+
+[See full release notes in the changelog here](CHANGELOG.md) for expanded details about changes for every release.
+
+## License
+
+This project is licensed under the Apache-2.0 License - [see the license file](https://github.com/benkahandevelopment/neatdsp/blob/master/LICENSE) for details.
