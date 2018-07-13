@@ -220,3 +220,7 @@ ul.cmp-details-notes li a:hover i.fa-trash { color: #d9534f; }
 #update-info p span { text-decoration: underline; }
 #update-links { display: none; text-align: center; }
 #update-links p { margin: 0; }
+label { margin-bottom: 0; }
+.form-group { margin: 10px 0; }
+.form-row { align-items: center; }
+.form-row:not(:last-child) { border-bottom: 1px solid #eceeef; }
