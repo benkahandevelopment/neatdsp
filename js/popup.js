@@ -211,8 +211,13 @@ $(function(){
             }, 'json');
         }, 'json');
 
-        //Settings - file download for exportAll\
+        //Settings - file download for exportAll
         $("#exportFile-btn").click(exportAll);
+
+        //Settings - delete all data
+        $("#deleteData-btn").click(function(){
+            if(confirm("Are you sure? This cannot be undone.")) deleteData();
+        });
 
         //Settings - file upload for import
         $("#importFile-btn").click(function(){ $("#importFile").click(); });
