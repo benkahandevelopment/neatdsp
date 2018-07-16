@@ -224,3 +224,49 @@ label { margin-bottom: 0; }
 .form-group { margin: 10px 0; }
 .form-row { align-items: center; }
 .form-row:not(:last-child) { border-bottom: 1px solid #eceeef; }
+
+
+#opt-list {
+    margin: 5px 0 0 0;
+    padding: 0 10px;
+    list-style: none;
+}
+
+#opt-list li { margin: 0 0 10px 0; }
+
+#opt-list li span.ts {
+    display: block;
+    margin: 0 0 3px 0;
+}
+
+#opt-list li span.ts::before {
+    content: '\f017';
+	font-family: "Font Awesome 5 Free";
+    margin-right: 5px;
+}
+
+#opt-list li.sep-date {
+    border-bottom: 1px solid #eceeef;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+#opt-list li .msg {
+    background-color: #eceeef;
+    padding: 10px;
+    margin: 5px 0;
+    position: relative;
+    font-size: 12px;
+}
+
+#opt-list li .meta {
+    padding: 0 0 0 5px;
+    font-size: 10px;
+    font-style: italic;
+    text-align: right;
+}
+
+#opt-list li .meta span {
+    font-weight: bold;
+    font-style: normal;
+}
