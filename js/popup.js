@@ -163,6 +163,7 @@ $(function(){
                 chrome.storage.sync.set({ "campaigns": cmps });
                 $("#modalPriority").modal('hide');
                 refreshThisCmp();
+                loadCampaigns();
             });
         })
 
@@ -258,6 +259,7 @@ $(function(){
                     chrome.storage.sync.set({"campaigns":cmps});
 
                     refreshThisCmp();
+                    loadCampaigns();
                 })
             }
         });
@@ -382,93 +384,10 @@ $(function(){
      * Other launch functions **/
 
         //Load campaigns
-        chrome.storage.sync.get({"campaigns":[]}, function(o){
-            load(true);
-            var cmps = o.campaigns;
-            var cmpdata = [];
-            if(cmps.length>0){
-                //Add to full list output
-                var $o = $("#all-list");
-                $o.html("");
-                cmps.forEach(function(i,v){
-                    if(i!=null) {
-                        cmpdata.push({id:v, text:i.name});
+        loadCampaigns();
 
-                        var notes = 0; var priority = 0;
-                        var priority_a = ['empty', 'quarter', 'half', 'three-quarters', 'full'];
-
-                        //Get length of campaign notes, average status
-                        i.cmps.forEach(function(x,y){
-                            priority += parseInt(x[0].priority) || 0;
-                            notes += x[0].notes ? x[0].notes.length : 0;
-                        });
-
-                        priority = priority / cmps.length;
-                        priority_acc = priority.toFixed(2);
-                        priority = Math.ceil(priority);
-
-                        var x =
-                            "<li class='list-group-item d-flex align-items-center'>"+
-                                //"<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
-                                "<i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"' data-toggle='tooltip' data-placement='bottom' title='Priority "+priority_acc+"'></i>"+
-                                "<i class='far fa-fw fa-comment"+(notes > 0 ? " colour-green' data-toggle='tooltip' data-placement='bottom' title='"+notes+" note"+(notes===1 ? "" : "s")+"'" : "'")+"></i>"+
-                                "<div><a href='#' class='cmp-name' data-id='"+v+"'>"+i.name+"</a><small class='text-muted'>"+i.cmps.length+"</small></div>"+
-                                "<div class='btn-group ml-auto'><button type='button' class='btn btn-sm btn-outline-danger cmp-delete' data-toggle='tooltip' data-placement='bottom' title='Delete Campaign'><i class='fa fa-fw fa-trash'></i></div>"
-                            "</li>";
-                        $o.append(x);
-                    }
-                });
-            }
-
-            //Initialize select2
-            $('#info-cmp-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
-            $('#info-cmp-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
-
-            $('#navbar-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
-            $('#navbar-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
-
-            $('#closed-search-cont select').select2({ placeholder: 'Choose a campaign', data: cmpdata });
-            $('#closed-search-cont select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
-
-            //On campaign selection
-            $('#info-cmp-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
-            $('#navbar-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
-
-            $('#closed-search-cont select').on('select2:select', function (e) {
-                var d = e.params.data;
-                chrome.storage.sync.set({"selectedCmp" : d.id});
-
-                load(true);
-                var $outEl = $("ul.closed-response");
-                $outEl.html('');
-
-                //Load objects under campaign
-                chrome.storage.sync.get({"campaigns":[]}, function(o){
-                    var cmps = o.campaigns;
-
-                    cmps[d.id].cmps.forEach(function(v,i){
-                        var data = v[0];
-                        var icon = (data.dsp=="dbm" ? "google" : (data.dsp=="aap" ? "amazon" : "yahoo"));
-                        var output = "<li data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
-                        "<i class='fab fa-fw fa-"+icon+"'></i>"+data.name+"<!--<span>"+data.dsp_id+"</span>--></li>";
-                        $outEl.append(output);
-                    });
-
-                    load(false);
-                });
-            });
-
-            //Save last campaign selection
-            chrome.storage.sync.get({"selectedCmp":0}, function(x){
-                var id = parseInt(x.selectedCmp);
-                $("#navbar-search select").val([id]);
-                $("#navbar-search select").trigger("change");
-
-                $("#info-cmp-display").attr('data-id', id);
-                $("#info-cmp-display").attr('data-name', $('#navbar-search select option[value='+id+']').html());
-                refreshThisCmp();
-            });
-        });
+        //Load optimization list
+        refreshNotes();
 
         //Load images
         var img = {};
@@ -532,8 +451,8 @@ function refreshThisCmp(){
                 notes.forEach(function(v,i){
                     var t = JSON.parse(v);
                     var d = moment(t.timestamp).fromNow();
-                    var l = moment(t.timestamp).format("MMMM Do [at] hh:mm");
-                    notes_output += "<li data-num='"+notes_num+"'><span title='"+l+"'><a href='#' class='note-delete' data-ts='"+t.timestamp+"'><i class='fa fa-fw fa-trash'></i></a> "+d+"</span>"+escapeHtml(t.msg)+"</li>"; //data-toggle='tooltip' data-placement='left'
+                    var l = moment(t.timestamp).format("MMMM Do [at] HH:mm");
+                    notes_output += "<li data-num='"+notes_num+"'><span title='"+l+"'><a href='#' class='note-delete' data-ts='"+t.timestamp+"'><i class='fa fa-fw fa-trash' title='Delete entry'></i></a> "+d+"</span>"+escapeHtml(t.msg)+"</li>"; //data-toggle='tooltip' data-placement='left'
                     notes_num++;
                 });
             }
@@ -563,6 +482,97 @@ function refreshThisCmp(){
         $('.page').animate({ scrollTop: 0 }, 250);
 
         load(false);
+    });
+}
+
+//Load all campaigns into list
+function loadCampaigns(){
+    chrome.storage.sync.get({"campaigns":[]}, function(o){
+        load(true);
+        var cmps = o.campaigns;
+        var cmpdata = [];
+        if(cmps.length>0){
+            //Add to full list output
+            var $o = $("#all-list");
+            $o.html("");
+            cmps.forEach(function(i,v){
+                if(i!=null) {
+                    cmpdata.push({id:v, text:i.name});
+
+                    var notes = 0; var priority = 0;
+                    var priority_a = ['empty', 'quarter', 'half', 'three-quarters', 'full'];
+
+                    //Get length of campaign notes, average status
+                    i.cmps.forEach(function(x,y){
+                        priority += parseInt(x[0].priority) || 0;
+                        notes += x[0].notes ? x[0].notes.length : 0;
+                    });
+
+                    priority = priority / cmps.length;
+                    priority_acc = priority.toFixed(1).split('.')[1]!="0" ? priority.toFixed(1) : priority.toFixed(0);
+                    priority = Math.ceil(priority);
+
+                    var x =
+                    "<li class='list-group-item d-flex align-items-center'>"+
+                    //"<span class='badge badge-info badge-pill mr-2'>"+i.cmps.length+"</span>"+
+                    "<i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"' data-toggle='tooltip' data-placement='bottom' title='Priority "+priority_acc+"'></i>"+
+                    "<i class='far fa-fw fa-comment"+(notes > 0 ? " colour-green' data-toggle='tooltip' data-placement='bottom' title='"+notes+" note"+(notes===1 ? "" : "s")+"'" : "'")+"></i>"+
+                    "<div><a href='#' class='cmp-name' data-id='"+v+"'>"+i.name+"</a><small class='text-muted'>"+i.cmps.length+"</small></div>"+
+                    "<div class='btn-group ml-auto'><button type='button' class='btn btn-sm btn-outline-danger cmp-delete' data-toggle='tooltip' data-placement='bottom' title='Delete Campaign'><i class='fa fa-fw fa-trash'></i></div>"
+                    "</li>";
+                    $o.append(x);
+                }
+            });
+        }
+
+        //Initialize select2
+        // $('#info-cmp-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
+        // $('#info-cmp-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+
+        $('#navbar-search select').select2({ placeholder: 'No campaign selected', data: cmpdata });
+        $('#navbar-search select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+
+        // $('#closed-search-cont select').select2({ placeholder: 'Choose a campaign', data: cmpdata });
+        // $('#closed-search-cont select').on("select2:unselect", () => { $('#info-cmp-search select').on("select2:open", () => { $(".select2-search__field").val(""); }); });
+
+        //On campaign selection
+        // $('#info-cmp-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
+        $('#navbar-search select').on('select2:select', function (e) { selectCmp(e.params.data); });
+
+        $('#closed-search-cont select').on('select2:select', function (e) {
+            var d = e.params.data;
+            chrome.storage.sync.set({"selectedCmp" : d.id});
+
+            load(true);
+            var $outEl = $("ul.closed-response");
+            $outEl.html('');
+
+            //Load objects under campaign
+            chrome.storage.sync.get({"campaigns":[]}, function(o){
+                var cmps = o.campaigns;
+
+                cmps[d.id].cmps.forEach(function(v,i){
+                    var data = v[0];
+                    var icon = (data.dsp=="dbm" ? "google" : (data.dsp=="aap" ? "amazon" : "yahoo"));
+                    var output = "<li data-dsp='"+data.dsp+"' data-dsp-id='"+data.dsp_id+"' data-adv-id='"+data.adv_id+"' data-par-id='"+data.par_id+"'>"+
+                    "<i class='fab fa-fw fa-"+icon+"'></i>"+data.name+"<!--<span>"+data.dsp_id+"</span>--></li>";
+                    $outEl.append(output);
+                });
+
+                load(false);
+            });
+        });
+
+        //Save last campaign selection
+        chrome.storage.sync.get({"selectedCmp":0}, function(x){
+            var id = parseInt(x.selectedCmp);
+            $("#navbar-search select").val([id]);
+            $("#navbar-search select").trigger("change");
+
+            $("#info-cmp-display").attr('data-id', id);
+            $("#info-cmp-display").attr('data-name', $('#navbar-search select option[value='+id+']').html());
+            refreshThisCmp();
+        });
     });
 }
 
@@ -642,6 +652,7 @@ function selectCmp(data){
     $("#navbar-search select").val([data.id]);
     $("#navbar-search select").trigger("change");
     refreshThisCmp();
+    loadCampaigns();
 }
 
 //Execute outbound hyperlink in new tab
@@ -704,6 +715,53 @@ function deleteNote(data){
         } catch(e){
             if(e !== BreakException) throw e;
         }
+    });
+}
+
+//Refresh optimizations list
+function refreshNotes(){
+    //Get full list of notes
+    chrome.storage.sync.get({"campaigns":[]}, function(o){
+        var notes = [];
+        var cmps = o.campaigns;
+        cmps.forEach(function(v,i){
+            if(( v !== null ) && ( v.cmps !== null )) {
+                v.cmps.forEach(function(a,b){
+                    if((a[0].notes !== null) && (a[0].notes !== undefined) && (a[0].notes.length > 0)){
+                        a[0].notes.forEach(function(c,d){
+                            var n = JSON.parse(c);
+                            n['cmp'] = v.name;
+                            n['obj'] = a[0].name;
+                            notes.push(n);
+                        })
+                    }
+                });
+            }
+        });
+
+        //Sort newest > oldest
+        notes.sort(function(a,b){
+            if(a.timestamp > b.timestamp) return -1;
+            else if(a.timestamp < b.timestamp) return 1;
+            else return 0;
+        });
+
+        //Append to list element
+        var x = "";
+        notes.forEach(function(v,i){
+            var d = moment(v.timestamp).format("MMMM Do");
+
+            if(d!==x){
+                x = d;
+                $("#opt-list").append("<li class='sep-date'>"+d+"</li>");
+            }
+
+            $("#opt-list").append("<li>"+
+            "<div class='msg'><span class='ts'>"+moment(v.timestamp).format("HH:mm")+"</span>"+v.msg+"</div>"+
+            "<div class='meta'><span>"+v.obj+"</span><br>("+v.cmp+")</div>"+
+            "</li>");
+        });
+
     });
 }
 
