@@ -390,7 +390,7 @@ $(function(){
                     'cmps' : []
                 };
                 chrome.storage.sync.set({"campaigns" : cmps});
-                chrome.storage.sync.set({"selectedCmp" : id})
+                chrome.storage.sync.set({"selectedCmp" : id});
                 window.location.reload();
             });
 
