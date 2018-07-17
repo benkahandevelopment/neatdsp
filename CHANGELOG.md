@@ -7,10 +7,11 @@
 
 ---
 ## Release Notes
+
 ### 1.x.x
 
-- ***1.0.x***
-  - ***1.3.0*** - Ability to export optimization log
-  - ***1.2.0*** - Settings page revamp, "delete data" button, optimization tab
-  - ***1.1.0*** - Added version info, data export, data import (campaigns only)
-  - ***1.0.0*** - Initial release
+<!-- - ***1.0.x*** -->
+- ***1.3.0*** - Ability to export optimization log
+- ***1.2.0*** - Settings page revamp, "delete data" button, optimization tab
+- ***1.1.0*** - Added version info, data export, data import (campaigns only)
+- ***1.0.0*** - Initial release
