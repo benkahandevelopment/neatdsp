@@ -234,6 +234,23 @@ $(function(){
             fr.readAsText($("#importFile").prop('files')[0]);
         });
 
+        //Optimization notes
+        $("select[name=opt-limit]").change(function(){
+            var $e = $("select[name=opt-limit]");
+            var v = (parseInt($e.val()) * 1000 * 60 * 60 * 24);
+            var x = parseInt(moment(new Date()).format("x") - v);
+
+            $("#opt-list li").show();
+            if($e.val()!=0){
+                $("#opt-list li").each(function(){
+                    if(parseInt($(this).attr('data-ts')) < x) $(this).hide();
+                });
+            }
+        });
+
+        //Optimizations - exportNotes
+        $("#exportOpt-btn").click(exportOpt);
+
     /**
      * Modals & Responses **/
 
@@ -753,12 +770,18 @@ function refreshNotes(){
 
             if(d!==x){
                 x = d;
-                $("#opt-list").append("<li class='sep-date'>"+d+"</li>");
+                $("#opt-list").append("<li class='sep-date' data-ts='"+v.timestamp+"'>"+d+"</li>");
             }
 
-            $("#opt-list").append("<li>"+
-            "<div class='msg'><span class='ts'>"+moment(v.timestamp).format("HH:mm")+"</span>"+v.msg+"</div>"+
-            "<div class='meta'><span>"+v.obj+"</span><br>("+v.cmp+")</div>"+
+            $("#opt-list").append("<li data-note='"+escapeHtml(v.msg)+"' data-ts='"+v.timestamp+"' data-date='"+moment(v.timestamp).format("DD/MM/YYYY")+"' data-time='"+moment(v.timestamp).format("HH:mm")+"'>"+
+                "<div class='msg'>"+
+                    "<span class='ts'>"+moment(v.timestamp).format("HH:mm")+"</span>"+
+                    v.msg+
+                "</div>"+
+                "<div class='meta' data-cmp='"+escapeHtml(v.cmp)+"' data-obj='"+escapeHtml(v.obj)+"'>"+
+                    "<span>"+v.obj+"</span><br>"+
+                    "("+v.cmp+")"+
+                "</div>"+
             "</li>");
         });
 
@@ -848,4 +871,26 @@ function exportAll(){
     chrome.storage.sync.get(null, function(i){
         download("NeatDSP-export-"+moment(new Date()).format("YYYYMMDD-HHmm")+".txt", JSON.stringify(i));
     });
+}
+
+function exportOpt(){
+    var output = [['Timestamp','Date','Time','Campaign','Object','Note']];
+    $("#opt-list li:not(.sep-date)").each(function(){
+        var $t = $(this);
+        output.push([
+            $t.attr('data-ts'),
+            $t.attr('data-date'),
+            $t.attr('data-time'),
+            $t.find(".meta").attr('data-cmp'),
+            $t.find(".meta").attr('data-obj'),
+            '"'+$t.attr('data-note').replace(/\"/g,"'")+'"'
+        ]);
+    });
+
+    csv = "";
+    output.forEach(function(v,i){
+        csv += v.join(",") + "\n";
+    });
+
+    download("NeatDSP-Optimizations-"+moment(new Date()).format("YYYYMMDD-HHmm")+".csv", csv);
 }
