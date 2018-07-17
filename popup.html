@@ -129,6 +129,22 @@
                 <!-- Settings -->
                 <div class="card mb-3" id="info-optimizations">
                     <h5 class="card-header">Optimizations</h5>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col col-10">
+                                <select name="opt-limit" class="form-control">
+                                    <option value="3">Last 3 days</option>
+                                    <option value="7">Last 7 days</option>
+                                    <option value="14">Last 14 days</option>
+                                    <option value="30">Last 30 days</option>
+                                    <option value="0" selected>All time</option>
+                                </select>
+                            </div>
+                            <div class="col col-2">
+                                <button type="button" id="exportOpt-btn" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Export CSV"><i class="fa fa-fw fa-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
                     <ul class="list-group list-group-flush" id="opt-list"></ul>
                 </div>
             </div>
