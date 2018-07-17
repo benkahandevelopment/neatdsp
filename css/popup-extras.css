@@ -270,3 +270,5 @@ label { margin-bottom: 0; }
     font-weight: bold;
     font-style: normal;
 }
+
+select[name=opt-limit] { height: auto !important; }
