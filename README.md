@@ -9,9 +9,21 @@
 
 Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Manager, Yahoo!/Oath Brightroll, Amazon Advertising Platform and more.
 
-<a href="https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn" target="_blank">
+<a href="https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn">
 <img src="https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png"/>
 </a>
+
+## Contents
+
+* [Usage](#usage)
+  * [Installation](#installation)
+  * [Updating](#updating)
+  * [Campaign Management](#campaign-management)
+  * [Contributing](#contributing)
+* [Meta Details](#meta-details)
+  * [Release History](#release-history)
+  * [Release Notes](#release-notes)
+  * [License](#license)
 
 ## Usage
 
@@ -23,6 +35,20 @@ Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Man
 2. Visit `chrome://extensions` in your Chrome browser (or click _Settings_ > _Extensions_)
 3. Enable _Developer Mode_ by toggling the switch in the top-right corner
 4. Click _Load Unpacked_ and find the **NeatDSP** folder
+
+\[[back to contents](#contents)\]
+
+### Updating
+
+**Important**: If you have downloaded the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn), your browser will automatically update extensions. The instructions below are just for local unpackaged installations
+
+1. Download package to a local folder
+2. Backup your **NeatDSP** data by clicking _Settings_ > _Export data_
+3. Find your existing installation and back it up
+4. Replace the files in the existing installation folder with the contents of the package downloaded in Step 1
+5. (Optional) If your data is missing, navigate to _Settigns_ > _Import data_ and find the file saved from Step 2 to load your campaign data and notes
+
+\[[back to contents](#contents)\]
 
 ### Campaign Management
 
@@ -36,6 +62,8 @@ Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Man
 
 ![Screenshot of Package](https://i.imgur.com/Z5syO65.png)
 
+\[[back to contents](#contents)\]
+
 ## Contributing
 
 1.  Fork it
@@ -46,19 +74,26 @@ Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Man
 7.  Push to the branch (`git push origin my-new-feature`)
 8.  Create new Pull Request
 
+\[[back to contents](#contents)\]
 
-# Meta Details
+## Meta Details
 
-## Release History
+### Release History
 
 See the [Release History](https://github.com/benkahandevelopment/neatdsp/releases) for a list of all releases.
 
 I use [SemVer](http://semver.org/) for versioning.
 
-## Release Notes
+\[[back to contents](#contents)\]
+
+### Release Notes
 
 [See full release notes in the changelog here](CHANGELOG.md) for expanded details about changes for every release.
 
-## License
+\[[back to contents](#contents)\]
+
+### License
 
 This project is licensed under the Apache-2.0 License - [see the license file](https://github.com/benkahandevelopment/neatdsp/blob/master/LICENSE) for details.
+
+\[[back to contents](#contents)\]
