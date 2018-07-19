@@ -1,11 +1,9 @@
 <!--# NeatDSP <img src="https://github.com/benkahandevelopment/neatdsp/blob/master/img/icon128.png" width="75" align="left" />-->
 
-<img src="https://i.imgur.com/ucy7Uir.gif" width=312 align="left"/>
+<img src="https://i.imgur.com/2cPgUlC.gif" width=312 align="left"/>
 
 
 Organise your multi-DSP Programmatic campaigns and optimization notes for fast reference and navigation.
-
----
 
 [![GitHub release](https://img.shields.io/github/release/benkahandevelopment/neatdsp.svg)](https://github.com/benkahandevelopment/neatdsp/releases)
 [![License: Apache 2](https://img.shields.io/github/license/benkahandevelopment/neatdsp.svg)](https://github.com/benkahandevelopment/neatdsp/blob/master/LICENSE)
@@ -14,6 +12,8 @@ Organise your multi-DSP Programmatic campaigns and optimization notes for fast r
 <a href="https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn">
 <img src="https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png"/>
 </a>
+
+---
 
 ## Contents
 
