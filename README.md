@@ -1,17 +1,19 @@
-# NeatDSP <img src="https://github.com/benkahandevelopment/neatdsp/blob/master/img/icon128.png" width="75" align="left" />
+<!--# NeatDSP <img src="https://github.com/benkahandevelopment/neatdsp/blob/master/img/icon128.png" width="75" align="left" />-->
 
+<img src="https://i.imgur.com/2cPgUlC.gif" width=312 align="left"/>
+
+
+Organise your multi-DSP Programmatic campaigns and optimization notes for fast reference and navigation.
 
 [![GitHub release](https://img.shields.io/github/release/benkahandevelopment/neatdsp.svg)](https://github.com/benkahandevelopment/neatdsp/releases)
 [![License: Apache 2](https://img.shields.io/github/license/benkahandevelopment/neatdsp.svg)](https://github.com/benkahandevelopment/neatdsp/blob/master/LICENSE)
 [![Web store version](https://img.shields.io/chrome-web-store/v/baafemcooelokbkmmmhkbemikigoeapn.svg)](https://chrome.google.com/webstore/detail/neatdsp/baafemcooelokbkmmmhkbemikigoeapn)
 
----
-
-Organise your multi-DSP Programmatic campaigns across Google Doubleclick Bid Manager, Yahoo!/Oath Brightroll, Amazon Advertising Platform and more.
-
 <a href="https://chrome.google.com/webstore/detail/baafemcooelokbkmmmhkbemikigoeapn">
 <img src="https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png"/>
 </a>
+
+---
 
 ## Contents
 
