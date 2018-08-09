@@ -228,8 +228,12 @@ label { margin-bottom: 0; }
 
 #opt-list {
     margin: 5px 0 0 0;
-    padding: 0 10px;
+    padding: 0 5px 0 10px;
     list-style: none;
+    border: 1px solid #eceeef;
+    border-width: 1px 0 0 0;
+    max-height: 250px;
+    overflow-y: auto;
 }
 
 #opt-list li { margin: 0 0 10px 0; }
@@ -246,7 +250,7 @@ label { margin-bottom: 0; }
 }
 
 #opt-list li.sep-date {
-    border-bottom: 1px solid #eceeef;
+    /* border-bottom: 1px solid #eceeef; */
     text-transform: uppercase;
     margin-top: 10px;
 }
