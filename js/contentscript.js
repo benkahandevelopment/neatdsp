@@ -71,7 +71,8 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     if ((msg.from === 'popup') && (msg.subject === 'dspInfo')) {
         output('Request from popup');
 
-        if(window.location.href.toLowerCase().indexOf("google.com/ddm/bidmanager") > -1){
+        if(window.location.href.toLowerCase().indexOf("google.com/ddm/bidmanager") > -1
+            || window.location.href.toLowerCase().indexOf("displayvideo.google.com") > -1){
             var a = [];
             var $b = $('div.breadcrumbs').find('.breadcrumbs-node');
             $b.each(function(i,v){
