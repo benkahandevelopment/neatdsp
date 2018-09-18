@@ -622,6 +622,24 @@ function setDspInfo(i){
         $('#info-page > h5 > i').removeClass().addClass('fa-fw').addClass('fab').addClass('fa-'+ico);
         ['par','adv','cmp'].forEach(function(v,i){
             if(cmpData[v]) $('[data-info='+v+']').html(cmpData[v].label).attr('data-href', cmpData[v].url).attr('data-dsp', d).attr('data-dsp-id', cmpData[v].data[v]);
+            else if(cmpData.adv.data.par && v==='par' && d=="dbm") {
+                //Get partner URL
+                var parts = cmpData['adv'].url.split("/");
+                var x = 0; var y = 0;
+                var urlp = "https://displayvideo.google.com/"
+
+                while(x < parts.length){
+                    urlp += "/" + parts[x];
+                    if(parts[x] == "p"){
+                        y = parts[x+1];
+                        urlp += "/" + parts[x+1];
+                        break;
+                    }
+                    x++;
+                }
+
+                $('[data-info=par]').html(cmpData.adv.data.par).attr('data-href', urlp).attr('data-dsp', d).attr('data-dsp-id', y);
+            }
         });
 
         if($("[data-info=cmp]").html()!="-") $(".cmp-add.collapse").addClass("show");
