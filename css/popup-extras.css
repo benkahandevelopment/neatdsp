@@ -76,8 +76,8 @@ a:hover { text-decoration: none; color: #4BBF73; }
 
 /* Other */
 
-.cmp-cmp .cmp-btns button { display: none; }
-.cmp-cmp:hover .cmp-btns button { display: inline-block; }
+/*.cmp-cmp .cmp-btns button { display: none; }
+.cmp-cmp:hover .cmp-btns button { display: inline-block; }*/
 #all-list span.badge { line-height: inherit !important; }
 #all-list .btn-group { opacity: 0; }
 #all-list li:hover .btn-group { opacity: 1; }
@@ -276,3 +276,18 @@ label { margin-bottom: 0; }
 }
 
 select[name=opt-limit] { height: auto !important; }
+
+.toggle-cont .edit-field {
+    margin: 10px 20px;
+    color: white;
+    text-align: right;
+    cursor: default;
+}
+.toggle-cont .edit-field i { cursor: pointer; margin-left: 10px; opacity: 0.25; }
+.toggle-cont .edit-field i.btn-cancel:hover { cursor: pointer; margin-left: 10px; }
+.toggle-cont .edit-field i.edittoggle { display: none; }
+.toggle-cont .edit-field i:hover, .toggle-cont .edit-field i:active { opacity: 1; }
+.toggle-cont .edit-field i.btn-confirm:hover { color: #4BBF73; }
+.toggle-cont .edit-field i.btn-cancel:hover { color: #d9534f; }
+
+.toggle-cont .edittoggle.hidden { display: none; }

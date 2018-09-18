@@ -147,7 +147,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
         }
 
         if(window.location.href.toLowerCase().indexOf("desk.thetradedesk.com") > -1){
-            
+
         }
     }
 });

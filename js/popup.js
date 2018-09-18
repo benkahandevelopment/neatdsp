@@ -50,6 +50,21 @@ $(function(){
         //Save campaign name 2
         $('input[name=data-cmp]').keypress(function(e){ if(e.which == 13){ saveCmpName(); } })
 
+        //Show/hide edit campaign
+        $('.edit-field .btn-edit').click(function(){
+            var $t = $(this);
+            var $c = $(this).closest('.toggle-cont');
+            $t.hide();
+            $c.find('.edittoggle').toggle();
+        });
+
+        $('.edit-field .btn-cancel').click(function(){
+            var $t = $(this);
+            var $c = $t.closest('.toggle-cont');
+            $c.find('.btn-edit').show();
+            $c.find('.edittoggle').toggle();
+        })
+
         //Campaign row - link 1
         $(document.body).on('click', '.cmp-row-link', function(){
             var $e = $(this).parent().parent().parent();
@@ -170,7 +185,7 @@ $(function(){
         //Campaign row - delete
         $(document.body).on('click', '.cmp-btns > .cmp-row-delete', function(){
             load(true);
-            var $e = $(this).parent().parent();
+            var $e = $(this).parent().parent().parent();
             var id = $('#info-cmp-display').attr('data-id');
             var c_dsp = $e.attr('data-dsp');
             var c_id = $e.attr('data-dsp-id');
@@ -484,8 +499,8 @@ function refreshThisCmp(){
                     "<br/><small class='text-muted text-sm'>"+data.dsp_id+(notes_num > 0 ? " | <a href='#' class='toggle-notes badge badge-pill badge-info'><i class='far fa-fw fa-comment'></i>&nbsp;"+notes_num+"</a>" : "")+"</small>"+
                 "</div>"+
                 "<div class='cmp-btns btn-group ml-auto'>"+
-                    //"<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
-                    "<span class='btn btn-sm btn-outline-secondary cmp-row-priority' data-toggle='tooltip' data-placement='bottom' title='Add details'><i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"'></i></span>"+
+                    "<button type='button' class='btn btn-sm btn-outline-danger cmp-row-delete edittoggle hidden' data-toggle='tooltip' data-placement='bottom' title='Remove from Campaign'><i class='cursor-p fa fa-fw fa-trash'></i></button>"+
+                    "<span class='btn btn-sm btn-outline-secondary cmp-row-priority edittoggle' data-toggle='tooltip' data-placement='bottom' title='Add details'><i class='fas fa-fw fa-thermometer-"+priority_a[priority]+"'></i></span>"+
                     //"<button type='button' class='btn btn-sm ml-1 btn-outline-success cmp-row-link' data-toggle='tooltip' data-placement='bottom' title='Visit this strategy'><i class='cursor-p fa fa-fw fa-external-link-square-alt'></i></button>"+
                 "</div>"+
             "</div><div class='cmp-details'>"+(notes_output ? notes_output : "")+"</div></li>";
