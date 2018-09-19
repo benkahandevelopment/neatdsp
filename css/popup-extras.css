@@ -289,5 +289,20 @@ select[name=opt-limit] { height: auto !important; }
 .toggle-cont .edit-field i:hover, .toggle-cont .edit-field i:active { opacity: 1; }
 .toggle-cont .edit-field i.btn-confirm:hover { color: #4BBF73; }
 .toggle-cont .edit-field i.btn-cancel:hover { color: #d9534f; }
-
 .toggle-cont .edittoggle.hidden { display: none; }
+
+
+.input-cardheader {
+    background-color: rgba(0,0,0,0.03);
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.125);
+    font-family: "Nunito Sans";
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    line-height: 19.2px;
+    padding: 12px 20px;
+    width: 100%;
+    color: #4bbf73;
+}

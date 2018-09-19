@@ -48,7 +48,10 @@ $(function(){
         $(document.body).on('click', '.ico-cont i.fa-check', function(){ saveCmpName(); });
 
         //Save campaign name 2
-        $('input[name=data-cmp]').keypress(function(e){ if(e.which == 13){ saveCmpName(); } })
+        $('input[name=data-cmp]').keypress(function(e){ if(e.which == 13){ saveCmpName(); } });
+
+        //Save campaign name 3
+        $('input[data-input=name]').keypress(function(e){ if(e.which == 13){ saveCmpName(); } });
 
         //Show/hide edit campaign
         $('.edit-field .btn-edit').click(function(){
@@ -453,7 +456,7 @@ function refreshThisCmp(){
     var $e = $("#info-cmp-display");
     var cmpId = $e.attr('data-id');
 
-    if(cmpId==0||cmpId===undefined) {
+    if(cmpId==0||cmpId===undefined||cmpId===null) {
         //No campaigns in system - most likely first launch!
         $e.find('[data-cmp=name]').html("No Saved Campaigns").parent().parent().removeClass("mb-3");
         load(false);
@@ -461,6 +464,7 @@ function refreshThisCmp(){
     }
 
     $e.find('[data-cmp=name]').html($e.attr('data-name'));
+    $e.find('[data-input=name]').val($e.attr('data-name'));
     $e.find('[data-cmp=id]').html("#"+cmpId);
 
     //Load objects under campaign
@@ -668,7 +672,7 @@ function setDspInfo(i){
 
 //Save change to campaign name
 function saveCmpName(){
-    load(true);
+    /*load(true);
     var $t = $('.ico-cont i:eq(0)');
     var $el = $t.parent().parent().find('div:eq(0)');
     $el.find('h3').show();
@@ -682,6 +686,22 @@ function saveCmpName(){
         cmps[id].name = nt;
         chrome.storage.sync.set({"campaigns":cmps});
         $el.find('h3').html(nt);
+        load(false);
+    });*/
+
+    load(true);
+    var $el = $('#info-cmp-display');
+    //$el.find('h5').show();
+    //$el.find('input[data-input=name]').hide();
+
+    var id = $('#info-cmp-display').attr('data-id');
+    var nt = $el.find('input[data-input=name]').val();
+
+    chrome.storage.sync.get({"campaigns":[]}, function(o){
+        var cmps = o.campaigns;
+        cmps[id].name = nt;
+        chrome.storage.sync.set({"campaigns":cmps});
+        $el.find('h5').html(nt);
         load(false);
     });
 }

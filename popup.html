@@ -60,12 +60,14 @@
                 <!-- Current campaign info -->
                 <div class="card bg-dark mb-3" id="info-cmp">
                     <div id="info-cmp-display" class="toggle-cont">
-                        <h5 class="card-header text-white" data-cmp="name"></h5>
+                        <h5 class="card-header text-white edittoggle" data-cmp="name"></h5>
+                        <input class="input-cardheader edittoggle hidden" data-input="name" value="" />
                         <ul class="list-group list-group-flush" id="cmp-list"></ul>
                         <div class="edit-field">
-                            <i class="fa fa-fw fa-edit btn-edit"></i>
-                            <i class="fa fa-fw fa-edit btn-cancel edittoggle"></i>
-                            <!--<i class="fa fa-fw fa-check btn-confirm edittoggle"></i>
+                            <i class="fa fa-fw fa-lock btn-edit"></i>
+                            <i class="fa fa-fw fa-lock-open btn-cancel edittoggle"></i>
+                            <!--<i class="fa fa-fw fa-edit btn-cancel edittoggle"></i>
+                            <i class="fa fa-fw fa-check btn-confirm edittoggle"></i>
                             <i class="fa fa-fw fa-times btn-cancel edittoggle"></i>-->
                         </div>
                     </div>
